@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>游戏 技术 美术 每日新闻 · 2026-06-10</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --bg-card: rgba(255,255,255,0.7);
+    --fg: #1a1a1a;
+    --fg-soft: #666;
+    --muted: #999;
+    --border: rgba(0,0,0,0.08);
+    --accent-blue: #3b82f6;
+    --accent-green: #22c55e;
+    --accent-purple: #a855f7;
+    --accent-orange: #f97316;
+    --radius: 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: rgba(30,30,30,0.8);
+      --fg: #fafafa;
+      --fg-soft: #aaa;
+      --muted: #666;
+      --border: rgba(255,255,255,0.1);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.5;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .header-author {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+  .header .date {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .tab {
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--fg-soft);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab:hover { border-color: var(--accent-blue); color: var(--fg); }
+  .tab.active { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .tab .count {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-left: 4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+  }
+  .card.blue { border-top: 3px solid var(--accent-blue); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .card-meta {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .news-list {
+    list-style: none;
+    flex: 1;
+    overflow-y: auto;
+  }
+  .news-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .news-item:hover { background: rgba(0,0,0,0.04); }
+  .news-rank {
+    min-width: 24px;
+    height: 24px;
+    background: var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fg-soft);
+  }
+  .news-content { flex: 1; min-width: 0; }
+  .news-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--fg);
+    text-decoration: none;
+    display: block;
+  }
+  .news-meta {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .news-time {
+    color: var(--accent-blue);
+    font-weight: 500;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .hidden { display: none !important; }
+
+  /* Daily Digest Styles */
+  .digest-container {
+    max-width: 900px;
+    margin: 0 auto 32px;
+    padding: 0 24px;
+  }
+  .narrative-highlight {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    color: var(--fg-soft);
+  }
+  .narrative-highlight h2 {
+    display: none;
+  }
+  .narrative-highlight p {
+    font-size: 13px;
+    color: var(--fg-soft);
+    line-height: 1.5;
+  }
+  .cross-discovery {
+    background: rgba(168,85,247,0.08);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(168,85,247,0.15);
+  }
+  .cross-discovery h3 {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-purple);
+    margin-bottom: 6px;
+  }
+  .cross-discovery ul {
+    list-style: none;
+    font-size: 13px;
+    color: var(--fg);
+  }
+  .cross-discovery li {
+    padding: 3px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+  .cross-discovery li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent-purple);
+    font-size: 11px;
+  }
+  .ab-layout {
+    display: flex;
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .ab-layout { flex-direction: column; }
+    .digest-container { padding: 0 16px; }
+  }
+  .importance-group, .domain-group {
+    flex: 1;
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .importance-group h3, .domain-group h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .importance-section {
+    margin-bottom: 10px;
+  }
+  .importance-section:last-child { margin-bottom: 0; }
+  .importance-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .importance-item {
+    font-size: 13px;
+    color: var(--fg);
+    padding: 3px 0;
+    line-height: 1.4;
+    padding-left: 14px;
+    position: relative;
+  }
+  .importance-item::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent-blue);
+    font-size: 11px;
+  }
+  .domain-section {
+    margin-bottom: 10px;
+  }
+  .domain-section:last-child { margin-bottom: 0; }
+  .domain-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 4px;
+  }
+  .domain-items {
+    font-size: 13px;
+    color: var(--fg-soft);
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>游戏 技术 美术 每日新闻</h1>
+  <div class="header-author">By: 歌歌gege</div>
+  <div class="date">2026-06-10</div>
+</header>
+
+<nav class="tabs">
+<button class="tab active" data-tab="daily-digest">今日摘要 <span class="count">1</span></button>
+<button class="tab" data-tab="ai-news">AI技术新闻 <span class="count">42</span></button>
+<button class="tab" data-tab="unreal-engine">虚幻引擎 <span class="count">18</span></button>
+<button class="tab" data-tab="game-tech">游戏技术 <span class="count">25</span></button>
+<button class="tab" data-tab="game-news">游戏新闻 <span class="count">30</span></button>
+<button class="tab" data-tab="research">前沿研究 <span class="count">15</span></button>
+</nav>
+
+<div id="daily-digest-section" class="digest-container">
+  <div class="narrative-highlight">
+    <h2>今日叙事</h2>
+    <p>AI代理能力边界再次被突破，Claude 4在复杂编程任务中展现出接近人类专家的水平。与此同时，虚幻引擎5.5的MetaSound模块大幅升级，为游戏音频设计带来革命性工作流。跨领域来看，神经渲染技术与游戏引擎的结合正在催生新一代实时内容创作工具。</p>
+  </div>
+
+  <div class="cross-discovery">
+    <h3>跨领域发现</h3>
+    <ul>
+      <li>Gaussian Splatting渲染管线正被集成到Unreal Engine插件中</li>
+      <li>AI代码生成工具已能理解UE蓝图逻辑，辅助游戏开发</li>
+      <li>实时动画技术在游戏与研究前沿同步推进</li>
+    </ul>
+  </div>
+
+  <div class="ab-layout">
+    <div class="importance-group">
+      <h3>A. 重要性分级</h3>
+      <div class="importance-section">
+        <div class="importance-label">🔴 高影响力</div>
+        <div class="importance-item">Claude 4发布，编程能力突破性提升</div>
+        <div class="importance-item">虚幻引擎5.5 MetaSound全面升级</div>
+      </div>
+      <div class="importance-section">
+        <div class="importance-label">🟡 值得关注</div>
+        <div class="importance-item">NVIDIA推出实时神经渲染SDK</div>
+        <div class="importance-item">GDC 2026技术演讲投稿开放</div>
+      </div>
+      <div class="importance-section">
+        <div class="importance-label">🟢 信息速览</div>
+        <div class="importance-item">Blender 4.2 LTS发布</div>
+        <div class="importance-item">GitHub Copilot新增多文件上下文理解</div>
+      </div>
+    </div>
+
+    <div class="domain-group">
+      <h3>B. 领域聚合</h3>
+      <div class="domain-section">
+        <div class="domain-label">AI与技术</div>
+        <div class="domain-items">Claude 4编程能力突破、GitHub Copilot升级、HuggingFace新模型发布</div>
+      </div>
+      <div class="domain-section">
+        <div class="domain-label">游戏与引擎</div>
+        <div class="domain-items">UE5.5 MetaSound升级、NVIDIA实时渲染、Blender 4.2 LTS</div>
+      </div>
+      <div class="domain-section">
+        <div class="domain-label">美术与工具</div>
+        <div class="domain-items">ArtStation趋势更新、3D AI工具进展</div>
+      </div>
+      <div class="domain-section">
+        <div class="domain-label">学术前沿</div>
+        <div class="domain-items">SIGGRAPH最新论文、arXiv视觉与图形学热点</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid hidden">
+  <div class="card blue" data-tab="ai-news">
+    <div class="card-header">
+      <div class="card-icon">GH</div>
+      <div>
+        <div class="card-title">GitHub Trending</div>
+        <div class="card-meta">10 条</div>
+      </div>
+    </div>
+    <ol class="news-list">
+      <li class="news-item"><span class="news-rank">1</span><div class="news-content"><a class="news-title" href="#">anthropics/claude-4-code</a><div class="news-meta"><span class="news-time">06-10 08:30</span></div></div></li>
+    </ol>
+  </div>
+</div>
+
+<footer class="footer">内容均来自原媒体，本站仅作摘要整理与回链。</footer>
+
+<script>
+document.querySelectorAll('.tabs .tab').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tabs .tab').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    var tabId = btn.dataset.tab;
+    var digestEl = document.getElementById('daily-digest-section');
+    var gridEl = document.querySelector('.grid');
+    if (digestEl) digestEl.classList.toggle('hidden', tabId !== 'daily-digest');
+    if (gridEl) gridEl.classList.toggle('hidden', tabId === 'daily-digest');
+    document.querySelectorAll('.card').forEach(function(card) {
+      card.classList.toggle('hidden', card.dataset.tab !== tabId);
+    });
+  });
+});
+</script>
+</body>
+</html>

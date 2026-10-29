@@ -1,0 +1,29 @@
+# dependencies
+/node_modules
+
+# OS
+.DS_Store
+
+# env files — keys never committed
+.env*
+!.env.example
+
+# pipeline runtime output (each user generates their own)
+/daily_reports/
+/logs/
+
+# personal preference profile — kept local, tool degrades gracefully if absent
+/likes.md
+
+# Claude Code local state (skills + commands ARE committed; cache/state aren't)
+/.claude/state/
+/.claude/cache/
+
+# typescript
+*.tsbuildinfo
+
+# screenshot originals (only the cropped versions are committed)
+/docs/screenshots/originals/
+
+# firecrawl search cache
+/.firecrawl/

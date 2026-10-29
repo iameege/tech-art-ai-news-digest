@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Digest Preview - 2026-06-11</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --border: #30363d;
+            --accent-critical: #f85149;
+            --accent-high: #f0883e;
+            --accent-medium: #a371f7;
+            --accent-link: #58a6ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .header .date {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .importance-group {
+            margin-bottom: 24px;
+        }
+
+        .importance-label {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .importance-label.critical { color: var(--accent-critical); }
+        .importance-label.high { color: var(--accent-high); }
+        .importance-label.medium { color: var(--accent-medium); }
+
+        .importance-label .icon {
+            font-size: 18px;
+        }
+
+        .item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .item-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .item-summary {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .item-why {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .domain-group {
+            margin-bottom: 20px;
+        }
+
+        .domain-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            padding-left: 12px;
+            border-left: 3px solid var(--accent-link);
+        }
+
+        .domain-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+        }
+
+        .domain-item .title {
+            font-weight: 500;
+        }
+
+        .domain-item .summary {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .cross-domain {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, #1a1f35 100%);
+            border: 1px solid #303d6d;
+        }
+
+        .cross-domain .domain-item {
+            background: rgba(88, 166, 255, 0.1);
+            border-left: 3px solid var(--accent-link);
+        }
+
+        .narrative {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .narrative-highlight {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .narrative-highlight strong {
+            color: var(--accent-critical);
+        }
+
+        .narrative-others {
+            margin-bottom: 20px;
+        }
+
+        .narrative-others .title {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .narrative-others ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .narrative-others li {
+            padding: 4px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .narrative-others li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
+
+        .cross-discovery {
+            background: rgba(163, 113, 247, 0.1);
+            border-left: 3px solid var(--accent-medium);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 20px;
+        }
+
+        .cross-discovery .label {
+            font-weight: 600;
+            color: var(--accent-medium);
+            margin-bottom: 8px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .action-item {
+            background: var(--bg-tertiary);
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .action-item .label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .action-item .content {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .format-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            background: var(--bg-secondary);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .format-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .format-btn.active {
+            background: var(--accent-link);
+            color: white;
+        }
+
+        .format-btn:hover:not(.active) {
+            background: var(--bg-tertiary);
+        }
+
+        .format-content {
+            display: none;
+        }
+
+        .format-content.active {
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .format-switcher {
+                position: static;
+                justify-content: center;
+                margin-bottom: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="format-switcher">
+        <button class="format-btn active" onclick="showFormat('a')">A. 重要性</button>
+        <button class="format-btn" onclick="showFormat('b')">B. 领域</button>
+        <button class="format-btn" onclick="showFormat('c')">C. 叙事</button>
+    </div>
+
+    <div class="header">
+        <h1>Daily Digest</h1>
+        <div class="date">2026-06-11 | Platform Research TA</div>
+    </div>
+
+    <!-- Format A: 重要性分层 -->
+    <div id="format-a" class="format-content active">
+        <div class="section">
+            <div class="section-title">A. 重要性分层</div>
+
+            <div class="importance-group">
+                <div class="importance-label critical">
+                    <span class="icon">🚨</span> CRITICAL
+                </div>
+                <div class="item">
+                    <div class="item-title">Tripo v4 fixed topology export</div>
+                    <div class="item-summary">移除了 AI 生成模型的 retopo 瓶颈，直接解决 T2 约束</div>
+                    <div class="item-why">瓶颈移动：AI 生成 3D 从"看着好，用不了"变成"可直接进引擎"</div>
+                </div>
+                <div class="item">
+                    <div class="item-title">Gaussian Splatting animation paper</div>
+                    <div class="item-summary">GS 从静态场景 → 动态角色支持</div>
+                    <div class="item-why">约束揭示：此前 GS 无法做动画，这是 T8 追踪的关键突破</div>
+                </div>
+            </div>
+
+            <div class="importance-group">
+                <div class="importance-label high">
+                    <span class="icon">⚡</span> HIGH
+                </div>
+                <div class="item">
+                    <div class="item-title">NVIDIA Cosmos world models</div>
+                    <div class="item-summary">Physical AI 工具生态信号，值得跟踪</div>
+                </div>
+                <div class="item">
+                    <div class="item-title">Hunyuan 3D API 生产就绪</div>
+                    <div class="item-summary">比网页版更适合 pipeline 集成，API 更专业</div>
+                </div>
+                <div class="item">
+                    <div class="item-title">Blender 4.2 Geometry Nodes 更新</div>
+                    <div class="item-summary">程序化工作流改进，新的节点类型</div>
+                </div>
+            </div>
+
+            <div class="importance-group">
+                <div class="importance-label medium">
+                    <span class="icon">📌</span> MEDIUM
+                </div>
+                <div class="item">
+                    <div class="item-title">UE 5.6 first person rendering 演讲</div>
+                    <div class="item-summary">脚部可见性问题参考，比预想复杂</div>
+                </div>
+                <div class="item">
+                    <div class="item-title">Valve 停止 Steam Gift Cards</div>
+                    <div class="item-summary">行业动向，2026 年底完全停止</div>
+                </div>
+                <div class="item">
+                    <div class="item-title">arXiv: NeRF 加速新方法</div>
+                    <div class="item-summary">研究里程碑，训练速度提升 3x</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Format B: 领域聚合 -->
+    <div id="format-b" class="format-content">
+        <div class="section">
+            <div class="section-title">B. 领域聚合</div>
+
+            <div class="domain-group">
+                <div class="domain-label">AI技术</div>
+                <div class="domain-item">
+                    <div class="title">Tripo v4</div>
+                    <div class="summary">固定拓扑导出，解决 retopo 痛点</div>
+                </div>
+                <div class="domain-item">
+                    <div class="title">Hunyuan 3D API</div>
+                    <div class="summary">生产级 API，pipeline 可集成</div>
+                </div>
+                <div class="domain-item">
+                    <div class="title">NVIDIA Cosmos</div>
+                    <div class="summary">世界模型工具生态</div>
+                </div>
+            </div>
+
+            <div class="domain-group">
+                <div class="domain-label">游戏技术</div>
+                <div class="domain-item">
+                    <div class="title">Gaussian Splatting animation</div>
+                    <div class="summary">GS 支持动态角色</div>
+                </div>
+                <div class="domain-item">
+                    <div class="title">Blender Geometry Nodes</div>
+                    <div class="summary">程序化工作流改进</div>
+                </div>
+            </div>
+
+            <div class="domain-group">
+                <div class="domain-label">虚幻引擎</div>
+                <div class="domain-item">
+                    <div class="title">UE 5.6 first person rendering</div>
+                    <div class="summary">脚部可见性问题参考</div>
+                </div>
+            </div>
+
+            <div class="domain-group">
+                <div class="domain-label">游戏新闻</div>
+                <div class="domain-item">
+                    <div class="title">Valve 停止 Steam Gift Cards</div>
+                    <div class="summary">2026 年底完全停止</div>
+                </div>
+            </div>
+
+            <div class="domain-group">
+                <div class="domain-label">前沿研究</div>
+                <div class="domain-item">
+                    <div class="title">arXiv: 3D Gaussian Animation</div>
+                    <div class="summary">论文首发，动态 GS 方法</div>
+                </div>
+                <div class="domain-item">
+                    <div class="title">SIGGRAPH: NeRF 加速</div>
+                    <div class="summary">研究里程碑，训练加速 3x</div>
+                </div>
+            </div>
+
+            <div class="domain-group cross-domain">
+                <div class="domain-label">跨域信号</div>
+                <div class="domain-item">
+                    <div class="title">robotics → game tech</div>
+                    <div class="summary">NVIDIA Cosmos 的 Physical AI 模拟器模式可迁移到 game physics</div>
+                </div>
+                <div class="domain-item">
+                    <div class="title">embodied AI ↔ simulation</div>
+                    <div class="summary">世界模型用于 NPC 行为训练</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Format C: 叙事式 -->
+    <div id="format-c" class="format-content">
+        <div class="section">
+            <div class="section-title">C. 今日叙事</div>
+
+            <div class="narrative">
+                <div class="narrative-highlight">
+                    今天最重要的信号是 <strong>Tripo v4 fixed topology</strong>，因为瓶颈移动 — AI 生成 3D 模型从"看着好，用不了"变成"可直接进引擎"。
+                </div>
+
+                <div class="narrative-others">
+                    <div class="title">另外值得关注的还有：</div>
+                    <ul>
+                        <li><strong>Gaussian Splatting animation</strong> — 静态 → 动态的突破</li>
+                        <li><strong>NVIDIA Cosmos</strong> — 世界模型工具生态正在形成</li>
+                        <li><strong>Hunyuan 3D API</strong> — 生产就绪的 AI 3D pipeline</li>
+                    </ul>
+                </div>
+
+                <div class="cross-discovery">
+                    <div class="label">跨域发现</div>
+                    <div class="content">
+                        robotics 的 Physical AI 模拟器模式正在形成标准，game physics 可以借鉴其 agent 训练管线。世界模型（NVIDIA Cosmos）可能成为 NPC 行为训练的新范式。
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <div class="action-item">
+                        <div class="label">Try</div>
+                        <div class="content">Tripo v4 导出复杂模型测试拓扑</div>
+                    </div>
+                    <div class="action-item">
+                        <div class="label">Evaluate</div>
+                        <div class="content">NVIDIA Cosmos UE 集成路径</div>
+                    </div>
+                    <div class="action-item">
+                        <div class="label">Monitor</div>
+                        <div class="content">GS animation 论文开源实现</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showFormat(format) {
+            // Hide all formats
+            document.querySelectorAll('.format-content').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Deactivate all buttons
+            document.querySelectorAll('.format-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected format
+            document.getElementById('format-' + format).classList.add('active');
+
+            // Activate selected button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Digest - 2026-06-11</title>
+    <style>
+      :root {
+        --bg: #fafafa;
+        --bg-card: rgba(255,255,255,0.7);
+        --fg: #1a1a1a;
+        --fg-soft: #666;
+        --muted: #999;
+        --border: rgba(0,0,0,0.08);
+        --accent-blue: #3b82f6;
+        --accent-green: #22c55e;
+        --accent-purple: #a855f7;
+        --accent-orange: #f97316;
+        --accent-red: #ef4444;
+        --radius: 16px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0a0a0a;
+          --bg-card: rgba(30,30,30,0.8);
+          --fg: #fafafa;
+          --fg-soft: #aaa;
+          --muted: #666;
+          --border: rgba(255,255,255,0.1);
+        }
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+        line-height: 1.5;
+        min-height: 100vh;
+        padding: 24px;
+      }
+
+      /* Header */
+      .header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .header h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .header-author {
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 2px;
+      }
+      .header .date {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      /* Section Divider */
+      .section-divider {
+        text-align: center;
+        margin: 40px 0 24px 0;
+        position: relative;
+      }
+      .section-divider::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: 1px;
+        background: var(--border);
+      }
+      .section-label {
+        display: inline-block;
+        padding: 8px 20px;
+        background: var(--bg);
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--fg-soft);
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Grid Layout */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      /* Card */
+      .card {
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        padding: 16px;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        max-height: 400px;
+      }
+      .card.blue { border-top: 3px solid var(--accent-blue); }
+      .card.green { border-top: 3px solid var(--accent-green); }
+      .card.purple { border-top: 3px solid var(--accent-purple); }
+      .card.orange { border-top: 3px solid var(--accent-orange); }
+      .card.red { border-top: 3px solid var(--accent-red); }
+
+      /* Card Header */
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .card-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .card-title {
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .card-meta {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* News List */
+      .news-list {
+        list-style: none;
+        flex: 1;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+      }
+      .news-list::-webkit-scrollbar {
+        width: 6px;
+      }
+      .news-list::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .news-list::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+      }
+      .news-list::-webkit-scrollbar-thumb:hover {
+        background: var(--muted);
+      }
+      .news-item {
+        display: flex;
+        gap: 10px;
+        padding: 10px 8px;
+        border-radius: 8px;
+        transition: background 0.15s;
+        cursor: pointer;
+      }
+      .news-item:hover { background: rgba(0,0,0,0.04); }
+      @media (prefers-color-scheme: dark) {
+        .news-item:hover { background: rgba(255,255,255,0.05); }
+      }
+
+      .news-rank {
+        min-width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--fg-soft);
+      }
+      .news-rank.critical { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
+      .news-rank.high { background: rgba(249, 115, 22, 0.15); color: var(--accent-orange); }
+      .news-rank.medium { background: rgba(163, 113, 247, 0.15); color: var(--accent-purple); }
+
+      .news-content { flex: 1; min-width: 0; }
+      .news-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--fg);
+        text-decoration: none;
+        display: block;
+      }
+      .news-title:hover { color: var(--accent-blue); }
+      .news-meta {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+      .news-why {
+        font-size: 12px;
+        color: var(--fg-soft);
+        background: rgba(59, 130, 246, 0.1);
+        border-left: 2px solid var(--accent-blue);
+        padding: 6px 8px;
+        margin-top: 6px;
+        border-radius: 4px;
+      }
+
+      /* Narrative Section */
+      .narrative-card {
+        max-height: none;
+        padding: 24px;
+      }
+      .narrative-highlight {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.7;
+        margin-bottom: 24px;
+      }
+      .narrative-highlight strong {
+        color: var(--accent-red);
+      }
+      .narrative-section {
+        margin-bottom: 20px;
+      }
+      .narrative-section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--fg-soft);
+        margin-bottom: 12px;
+      }
+      .narrative-list {
+        list-style: none;
+      }
+      .narrative-list li {
+        padding: 8px 0;
+        padding-left: 20px;
+        position: relative;
+        font-size: 14px;
+      }
+      .narrative-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--accent-blue);
+      }
+      .cross-discovery {
+        background: rgba(163, 113, 247, 0.1);
+        border-left: 3px solid var(--accent-purple);
+        padding: 16px;
+        border-radius: 0 8px 8px 0;
+        margin-bottom: 20px;
+      }
+      .cross-discovery-title {
+        font-weight: 600;
+        color: var(--accent-purple);
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+      .cross-discovery-content {
+        font-size: 14px;
+        color: var(--fg);
+      }
+      .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .action-item {
+        background: rgba(0,0,0,0.04);
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      @media (prefers-color-scheme: dark) {
+        .action-item { background: rgba(255,255,255,0.05); }
+      }
+      .action-label {
+        font-size: 12px;
+        color: var(--accent-blue);
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .action-content {
+        font-size: 13px;
+        color: var(--fg);
+      }
+
+      /* Footer */
+      .footer {
+        text-align: center;
+        margin-top: 48px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      /* Full width card */
+      .card.full-width {
+        grid-column: 1 / -1;
+        max-height: none;
+      }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-author">By: 歌歌gege</div>
+        <h1>Daily Digest</h1>
+        <div class="date">2026-06-11</div>
+    </div>
+
+    <!-- A. 重要性分层 -->
+    <div class="section-divider">
+        <span class="section-label">A. 重要性分层</span>
+    </div>
+
+    <div class="grid">
+        <!-- CRITICAL -->
+        <div class="card red">
+            <div class="card-header">
+                <div class="card-icon" style="background: rgba(239, 68, 68, 0.15); color: var(--accent-red);">🚨</div>
+                <div class="card-title">CRITICAL</div>
+                <div class="card-meta">瓶颈移动 / 约束揭示</div>
+            </div>
+            <ul class="news-list">
+                <li class="news-item">
+                    <div class="news-rank critical">1</div>
+                    <div class="news-content">
+                        <a class="news-title">Tripo v4 fixed topology export</a>
+                        <div class="news-meta">AI 3D → Engine Ready</div>
+                        <div class="news-why">瓶颈移动：AI 生成 3D 从"看着好，用不了"变成"可直接进引擎"，解决 T2 约束</div>
+                    </div>
+                </li>
+                <li class="news-item">
+                    <div class="news-rank critical">2</div>
+                    <div class="news-content">
+                        <a class="news-title">Gaussian Splatting animation paper</a>
+                        <div class="news-meta">arXiv cs.GR</div>
+                        <div class="news-why">约束揭示：此前 GS 无法做动画，这是 T8 追踪的关键突破</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- HIGH -->
+        <div class="card orange">
+            <div class="card-header">
+                <div class="card-icon" style="background: rgba(249, 115, 22, 0.15); color: var(--accent-orange);">⚡</div>
+                <div class="card-title">HIGH</div>
+                <div class="card-meta">方法论验证 / 工具评估</div>
+            </div>
+            <ul class="news-list">
+                <li class="news-item">
+                    <div class="news-rank high">1</div>
+                    <div class="news-content">
+                        <a class="news-title">NVIDIA Cosmos world models</a>
+                        <div class="news-meta">Physical AI 工具生态</div>
+                    </div>
+                </li>
+                <li class="news-item">
+                    <div class="news-rank high">2</div>
+                    <div class="news-content">
+                        <a class="news-title">Hunyuan 3D API 生产就绪</a>
+                        <div class="news-meta">比网页版更适合 pipeline 集成</div>
+                    </div>
+                </li>
+                <li class="news-item">
+                    <div class="news-rank high">3</div>
+                    <div class="news-content">
+                        <a class="news-title">Blender 4.2 Geometry Nodes 更新</a>
+                        <div class="news-meta">程序化工作流改进</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MEDIUM -->
+        <div class="card purple">
+            <div class="card-header">
+                <div class="card-icon" style="background: rgba(163, 113, 247, 0.15); color: var(--accent-purple);">📌</div>
+                <div class="card-title">MEDIUM</div>
+                <div class="card-meta">长期跟踪</div>
+            </div>
+            <ul class="news-list">
+                <li class="news-item">
+                    <div class="news-rank medium">1</div>
+                    <div class="news-content">
+                        <a class="news-title">UE 5.6 first person rendering 演讲</a>
+                        <div class="news-meta">脚部可见性问题参考</div>
+                    </div>
+                </li>
+                <li class="news-item">
+                    <div class="news-rank medium">2</div>
+                    <div class="news-content">
+                        <a class="news-title">Valve 停止 Steam Gift Cards</a>
+                        <div class="news-meta">2026 年底完全停止</div>
+                    </div>
+                </li>
+                <li class="news-item">
+                    <div class="news-rank medium">3</div>
+                    <div class="news-content">
+                        <a class="news-title">arXiv: NeRF 加速新方法</a>
+                        <div class="news-meta">训练速度提升 3x</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- B. 领域聚合 -->
+    <div class="section-divider">
+        <span class="section-label">B. 领域聚合</span>
+    </div>
+
+    <div class="grid">
+        <!-- AI技术 -->
+        <div class="card blue">
+            <div class="card-header">
+                <div class="card-icon">AI</div>
+                <div class="card-title">AI技术</div>
+                <div class="card-meta">3 项</div>
+            </div>
+            <ul class="news-list">
+                <li class="news-item">
+                    <div class="news-rank">1</div>
+                    <div class="news-content">
+                        <a class="news-title">Tripo v4</a>
+                        <div class="news-meta">固定拓扑导出，解决 retopo 痛点</div>
+                    </div>
+                </li>
+                <li class="news-item">
+                    <div class="news-rank">2</div>
+                    <div class="news-content">
+                        <a class="news-title">Hunyuan 3D API</a>
+                        <div class="news-meta">生产级 API，pipeline 可集成</div>
+                    </div>
+                </li>
+                <li class="news-item">
+                    <div class="news-rank">3</div>
+                    <div class="news-content">
+                        <a class="news-title">NVIDIA Cosmos</a>
+                        <div class="news-meta">世界模型工具生态</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 游戏技术 -->
+        <div class="card green">
+            <div class="card-header">
+                <div class="card-icon">GT</div>
+                <div class="card-title">游戏技术</div>
+                <div class="card-meta">2 项</div>
+            </div>
+            <ul class="news-list">
+                <li class="news-item">
+                    <div class="news-rank">1</div>
+                    <div class="news-content">
+                        <a class="news-title">Gaussian Splatting animation</a>
+                        <div class="news-meta">GS 支持动态角色</div>
+                    </div>
+                </li>
+                <li class="news-item">
+                    <div class="news-rank">2</div>
+                    <div class="news-content">
+                        <a class="news-title">Blender Geometry Nodes</a>
+                        <div class="news-meta">程序化工作流改进</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 虚幻引擎 -->
+        <div class="card purple">
+            <div class="card-header">
+                <div class="card-icon">UE</div>
+                <div class="card-title">虚幻引擎</div>
+                <div class="card-meta">1 项</div>
+            </div>
+            <ul class="news-list">
+                <li class="news-item">
+                    <div class="news-rank">1</div>
+                    <div class="news-content">
+                        <a class="news-title">UE 5.6 first person rendering</a>
+                        <div class="news-meta">脚部可见性问题参考</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 游戏新闻 -->
+        <div class="card orange">
+            <div class="card-header">
+                <div class="card-icon">GN</div>
+                <div class="card-title">游戏新闻</div>
+                <div class="card-meta">1 项</div>
+            </div>
+            <ul class="news-list">
+                <li class="news-item">
+                    <div class="news-rank">1</div>
+                    <div class="news-content">
+                        <a class="news-title">Valve 停止 Steam Gift Cards</a>
+                        <div class="news-meta">2026 年底完全停止</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 前沿研究 -->
+        <div class="card blue">
+            <div class="card-header">
+                <div class="card-icon">RS</div>
+                <div class="card-title">前沿研究</div>
+                <div class="card-meta">2 项</div>
+            </div>
+            <ul class="news-list">
+                <li class="news-item">
+                    <div class="news-rank">1</div>
+                    <div class="news-content">
+                        <a class="news-title">arXiv: 3D Gaussian Animation</a>
+                        <div class="news-meta">论文首发，动态 GS 方法</div>
+                    </div>
+                </li>
+                <li class="news-item">
+                    <div class="news-rank">2</div>
+                    <div class="news-content">
+                        <a class="news-title">SIGGRAPH: NeRF 加速</a>
+                        <div class="news-meta">研究里程碑，训练加速 3x</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 跨域信号 -->
+        <div class="card purple">
+            <div class="card-header">
+                <div class="card-icon">↔</div>
+                <div class="card-title">跨域信号</div>
+                <div class="card-meta">domain A ↔ domain B</div>
+            </div>
+            <ul class="news-list">
+                <li class="news-item">
+                    <div class="news-rank">1</div>
+                    <div class="news-content">
+                        <a class="news-title">robotics → game tech</a>
+                        <div class="news-meta">NVIDIA Cosmos Physical AI 模拟器模式可迁移到 game physics</div>
+                    </div>
+                </li>
+                <li class="news-item">
+                    <div class="news-rank">2</div>
+                    <div class="news-content">
+                        <a class="news-title">embodied AI ↔ simulation</a>
+                        <div class="news-meta">世界模型用于 NPC 行为训练</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- C. 今日叙事 -->
+    <div class="section-divider">
+        <span class="section-label">C. 今日叙事</span>
+    </div>
+
+    <div class="grid">
+        <div class="card full-width narrative-card">
+            <div class="narrative-highlight">
+                今天最重要的信号是 <strong>Tripo v4 fixed topology</strong>，因为瓶颈移动 — AI 生成 3D 模型从"看着好，用不了"变成"可直接进引擎"。
+            </div>
+
+            <div class="narrative-section">
+                <div class="narrative-section-title">另外值得关注的还有：</div>
+                <ul class="narrative-list">
+                    <li><strong>Gaussian Splatting animation</strong> — 静态 → 动态的突破</li>
+                    <li><strong>NVIDIA Cosmos</strong> — 世界模型工具生态正在形成</li>
+                    <li><strong>Hunyuan 3D API</strong> — 生产就绪的 AI 3D pipeline</li>
+                </ul>
+            </div>
+
+            <div class="cross-discovery">
+                <div class="cross-discovery-title">跨域发现</div>
+                <div class="cross-discovery-content">
+                    robotics 的 Physical AI 模拟器模式正在形成标准，game physics 可以借鉴其 agent 训练管线。世界模型（NVIDIA Cosmos）可能成为 NPC 行为训练的新范式。
+                </div>
+            </div>
+
+            <div class="actions-grid">
+                <div class="action-item">
+                    <div class="action-label">Try</div>
+                    <div class="action-content">Tripo v4 导出复杂模型测试拓扑</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-label">Evaluate</div>
+                    <div class="action-content">NVIDIA Cosmos UE 集成路径</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-label">Monitor</div>
+                    <div class="action-content">GS animation 论文开源实现</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        内容均来自原媒体，本站仅作摘要整理与回链。
+    </div>
+</body>
+</html>

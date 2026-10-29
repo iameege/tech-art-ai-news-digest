@@ -1,0 +1,520 @@
+[
+  {
+    "id": "github-trending",
+    "name": "GitHub Trending",
+    "type": "scrape",
+    "url": "https://github.com/trending",
+    "category": "tech",
+    "subcategory": "github-trending",
+    "limit": 7,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "huggingface-blog",
+    "name": "Hugging Face Blog",
+    "type": "rss",
+    "url": "https://huggingface.co/blog/feed.xml",
+    "category": "tech",
+    "subcategory": "ai-news",
+    "limit": 7,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "huggingface-papers",
+    "name": "HuggingFace Trending Papers",
+    "type": "api",
+    "url": "https://huggingface.co/api/daily_papers",
+    "category": "research",
+    "subcategory": "research",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ],
+    "keywords": [
+      "LLM",
+      "agent",
+      "RAG",
+      "reasoning",
+      "coding",
+      "3D",
+      "vision",
+      "generation"
+    ]
+  },
+  {
+    "id": "tldr-ai",
+    "name": "TLDR AI",
+    "type": "rss",
+    "url": "https://tldr.tech/api/rss/ai",
+    "category": "tech",
+    "subcategory": "ai-news",
+    "limit": 7,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "mit-tech-review-ai",
+    "name": "MIT Tech Review AI",
+    "type": "rss",
+    "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed",
+    "category": "tech",
+    "subcategory": "ai-news",
+    "limit": 7,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "latent-space",
+    "name": "Latent Space",
+    "type": "rss",
+    "url": "https://latent.space/feed",
+    "category": "tech",
+    "subcategory": "ai-news",
+    "limit": 7,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "creativeapplications",
+    "name": "Creative Applications",
+    "type": "rss",
+    "url": "https://creativeapplications.net/feed/",
+    "category": "tech",
+    "subcategory": "ai-news",
+    "limit": 7,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "attentionvc-ai",
+    "name": "X AI Posts",
+    "type": "api",
+    "url": "https://reply-vc-90459984647.us-central1.run.app/v1/articles/leaderboard?window=3d&category=ai&lang=en&limit=10",
+    "category": "tech",
+    "subcategory": "ai-news",
+    "limit": 7,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "techcrunch",
+    "name": "TechCrunch",
+    "type": "rss",
+    "url": "https://techcrunch.com/feed/",
+    "category": "tech",
+    "subcategory": "ai-news",
+    "limit": 7,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "80lv",
+    "name": "80 Level",
+    "type": "rss",
+    "url": "https://80.lv/feed/",
+    "category": "games",
+    "subcategory": "game-news",
+    "limit": 10,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "nvidia-developer",
+    "name": "NVIDIA Developer",
+    "type": "rss",
+    "url": "https://developer.nvidia.com/blog/feed/",
+    "category": "games",
+    "subcategory": "game-tech",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "amd-gpuopen",
+    "name": "AMD GPUOpen",
+    "type": "rss",
+    "url": "https://gpuopen.com/feed/",
+    "category": "games",
+    "subcategory": "game-tech",
+    "limit": 5,
+    "enabled": false,
+    "notes": "2026-09-05 disabled per user: rarely updated, AMD-ecosystem content weakly relevant to TA profile",
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "blender",
+    "name": "Blender",
+    "type": "rss",
+    "url": "https://www.blender.org/feed/",
+    "category": "games",
+    "subcategory": "game-tech",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "gdc-technology",
+    "name": "GDC Technology",
+    "type": "rss",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCAH6Z8GXrHl9hFSAHipUbEQ",
+    "category": "games",
+    "subcategory": "game-tech",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "stefan-3d-ai",
+    "name": "Stefan 3D AI",
+    "type": "rss",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCRW08KcTVjXEmBzBsVl7XjA",
+    "category": "games",
+    "subcategory": "game-tech",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "neural4d",
+    "name": "Neural4D",
+    "type": "rss",
+    "url": "https://blog.neural4d.com/feed",
+    "category": "games",
+    "subcategory": "game-tech",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "fal-ai",
+    "name": "fal.ai Blog",
+    "type": "rss",
+    "url": "https://blog.fal.ai/rss/",
+    "category": "games",
+    "subcategory": "game-tech",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "roboflow",
+    "name": "Roboflow",
+    "type": "rss",
+    "url": "https://blog.roboflow.com/feed",
+    "category": "games",
+    "subcategory": "game-tech",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "unreal-engine-blog",
+    "name": "Unreal Engine Blog",
+    "type": "rss",
+    "url": "https://www.unrealengine.com/en-US/rss",
+    "category": "games",
+    "subcategory": "unreal-engine",
+    "limit": 10,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "realtime-vfx",
+    "name": "Real Time VFX",
+    "type": "rss",
+    "url": "https://realtimevfx.com/posts.rss",
+    "category": "games",
+    "subcategory": "unreal-engine",
+    "limit": 10,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "tom-looman",
+    "name": "Tom Looman",
+    "type": "rss",
+    "url": "https://tomlooman.com/feed",
+    "category": "games",
+    "subcategory": "unreal-engine",
+    "limit": 10,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "william-faucher",
+    "name": "William Faucher",
+    "type": "rss",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCGKjGGjdl-GzEcFPf1EQwqw",
+    "category": "games",
+    "subcategory": "unreal-engine",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "ben-cloward",
+    "name": "Ben Cloward",
+    "type": "rss",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCoG9TB1eL6dm9eNbLFueHBQ",
+    "category": "games",
+    "subcategory": "unreal-engine",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "unreal-engine-youtube",
+    "name": "Unreal Engine (YouTube)",
+    "type": "rss",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCBobmJyzsJ6Ll7UbfhI4iwQ",
+    "category": "games",
+    "subcategory": "unreal-engine",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "tech-artists-org",
+    "name": "Tech-Artists.Org",
+    "type": "rss",
+    "url": "https://www.tech-artists.org/latest.rss",
+    "category": "games",
+    "subcategory": "unreal-engine",
+    "limit": 10,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "gamesindustry",
+    "name": "GamesIndustry.biz",
+    "type": "rss",
+    "url": "https://www.gamesindustry.biz/feed/",
+    "category": "games",
+    "subcategory": "game-news",
+    "limit": 10,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "pc-gamer",
+    "name": "PC Gamer",
+    "type": "rss",
+    "url": "https://www.pcgamer.com/rss/",
+    "category": "games",
+    "subcategory": "game-news",
+    "limit": 10,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "gamedeveloper",
+    "name": "Game Developer",
+    "type": "rss",
+    "url": "https://www.gamedeveloper.com/rss.xml",
+    "category": "games",
+    "subcategory": "game-news",
+    "limit": 10,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "arxiv-cs-cv",
+    "name": "arXiv cs.CV (Computer Vision)",
+    "type": "rss",
+    "url": "https://rss.arxiv.org/rss/cs.CV",
+    "category": "research",
+    "subcategory": "research",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "arxiv-cs-gr",
+    "name": "arXiv cs.GR (Graphics)",
+    "type": "rss",
+    "url": "https://rss.arxiv.org/rss/cs.GR",
+    "category": "research",
+    "subcategory": "research",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "arxiv-cs-ro",
+    "name": "arXiv cs.RO (Robotics)",
+    "type": "rss",
+    "url": "https://rss.arxiv.org/rss/cs.RO",
+    "category": "research",
+    "subcategory": "research",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "arxiv-cs-ai",
+    "name": "arXiv cs.AI (Artificial Intelligence)",
+    "type": "rss",
+    "url": "https://rss.arxiv.org/rss/cs.AI",
+    "category": "research",
+    "subcategory": "research",
+    "limit": 5,
+    "enabled": false,
+    "notes": "2026-09-05 disabled per user: too broad (NLP/agent theory firehose), not TA-relevant; cs.CV/GR/RO kept",
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "arxiv-cs-lg",
+    "name": "arXiv cs.LG (Machine Learning)",
+    "type": "rss",
+    "url": "https://rss.arxiv.org/rss/cs.LG",
+    "category": "research",
+    "subcategory": "research",
+    "limit": 5,
+    "enabled": false,
+    "notes": "2026-09-05 disabled per user: ML training theory, not TA-relevant; cs.CV/GR/RO kept",
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "acm-siggraph-blog",
+    "name": "ACM SIGGRAPH Blog",
+    "type": "rss",
+    "url": "https://blog.siggraph.org/feed/",
+    "category": "research",
+    "subcategory": "research",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "acm-siggraph-youtube",
+    "name": "ACM SIGGRAPH (YouTube)",
+    "type": "rss",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCbaxUExGKrH2zxY4AkY9wCg",
+    "category": "research",
+    "subcategory": "research",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "agent-reach",
+    "name": "Agent Reach",
+    "type": "api",
+    "url": "",
+    "category": "games",
+    "subcategory": "game-tech",
+    "limit": 20,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ],
+    "notes": "Multi-platform search (YouTube/B站/V2EX) via Agent Reach tools. No API key needed."
+  }
+]

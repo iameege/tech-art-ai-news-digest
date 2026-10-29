@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DailyBrief - NewsNow风格 B版 (UnoCSS原子类)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          base: 'var(--bg)',
+        }
+      }
+    }
+  }
+</script>
+<style>
+  @font-face {
+    font-family: 'Baloo 2';
+    src: url('https://fonts.gstatic.com/s/baloo2/v21/wXKrE3kTposypRyd51jcAA.woff2') format('woff2');
+  }
+  :root {
+    --bg: #fafafa;
+  }
+  .dark { --bg: #0a0a0a; }
+
+  /* NewsNow 核心风格 */
+  .card-bg {
+    @apply bg-white/70 dark:bg-neutral-900/80 backdrop-blur-sm border border-black/5 dark:border-white/10;
+  }
+  .sprinkle-blue { background-image: radial-gradient(circle at 20% 80%, rgba(59,130,246,0.08) 0%, transparent 50%); }
+  .sprinkle-green { background-image: radial-gradient(circle at 80% 20%, rgba(34,197,94,0.08) 0%, transparent 50%); }
+  .sprinkle-purple { background-image: radial-gradient(circle at 50% 50%, rgba(168,85,247,0.08) 0%, transparent 50%); }
+  .sprinkle-orange { background-image: radial-gradient(circle at 20% 20%, rgba(249,115,22,0.08) 0%, transparent 50%); }
+
+  /* 滚动条 */
+  .news-list::-webkit-scrollbar { width: 6px; }
+  .news-list::-webkit-scrollbar-thumb { @apply bg-black/20 dark:bg-white/20 rounded-full; }
+  .news-list::-webkit-scrollbar-track { @apply bg-transparent; }
+</style>
+</head>
+<body class="bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 min-h-screen p-6">
+
+<!-- Header -->
+<header class="text-center mb-8">
+  <h1 class="text-2xl font-bold tracking-tight">歌歌gege的每日简报</h1>
+  <p class="text-sm text-neutral-500 mt-1">2026-06-07 · B版 (UnoCSS原子类)</p>
+</header>
+
+<!-- Tabs -->
+<nav class="flex gap-2 justify-center flex-wrap mb-8">
+  <button class="px-4 py-2 rounded-full bg-neutral-900 dark:bg-neutral-100 text-neutral-100 dark:text-neutral-900 text-sm font-medium">
+    AI新闻 <span class="opacity-70 text-xs ml-1">77</span>
+  </button>
+  <button class="px-4 py-2 rounded-full bg-neutral-100/80 dark:bg-neutral-800/80 text-neutral-600 dark:text-neutral-400 text-sm font-medium hover:border-neutral-400 border border-transparent transition-colors">
+    技术新闻 <span class="opacity-70 text-xs ml-1">21</span>
+  </button>
+  <button class="px-4 py-2 rounded-full bg-neutral-100/80 dark:bg-neutral-800/80 text-neutral-600 dark:text-neutral-400 text-sm font-medium hover:border-neutral-400 border border-transparent transition-colors">
+    游戏技术 <span class="opacity-70 text-xs ml-1">11</span>
+  </button>
+  <button class="px-4 py-2 rounded-full bg-neutral-100/80 dark:bg-neutral-800/80 text-neutral-600 dark:text-neutral-400 text-sm font-medium hover:border-neutral-400 border border-transparent transition-colors">
+    游戏新闻 <span class="opacity-70 text-xs ml-1">80</span>
+  </button>
+  <button class="px-4 py-2 rounded-full bg-neutral-100/80 dark:bg-neutral-800/80 text-neutral-600 dark:text-neutral-400 text-sm font-medium hover:border-neutral-400 border border-transparent transition-colors">
+    前沿研究 <span class="opacity-70 text-xs ml-1">0</span>
+  </button>
+  <button class="px-4 py-2 rounded-full bg-neutral-100/80 dark:bg-neutral-800/80 text-neutral-600 dark:text-neutral-400 text-sm font-medium hover:border-neutral-400 border border-transparent transition-colors">
+    社区讨论 <span class="opacity-70 text-xs ml-1">41</span>
+  </button>
+</nav>
+
+<!-- Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 max-w-7xl mx-auto">
+
+  <!-- GitHub Trending Card -->
+  <div class="card-bg rounded-2xl p-4 flex flex-col min-h-[420px] sprinkle-blue">
+    <div class="flex items-center gap-3 mb-3 pb-3 border-b border-neutral-200/50 dark:border-neutral-700/50">
+      <div class="w-9 h-9 rounded-full bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center text-sm font-semibold">GH</div>
+      <div>
+        <h2 class="text-lg font-bold">GitHub Trending</h2>
+        <p class="text-xs text-neutral-500">18 repos · 刚刚更新</p>
+      </div>
+    </div>
+    <ol class="news-list flex-1 overflow-y-auto space-y-1 pr-1">
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">1</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-blue-500 transition-colors">mvanhorn/last30days-skill</a>
+          <p class="text-xs text-neutral-500 mt-0.5">Python · ★ 29,006 · 📈 439 stars today</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-blue-500/10 border-l-2 border-blue-500 text-neutral-700 dark:text-neutral-300">AI代理技能工具，可跨Reddit、X、YouTube等全网自动研究任意主题并生成摘要。</p>
+        </div>
+      </li>
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">2</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-blue-500 transition-colors">CopilotKit/CopilotKit</a>
+          <p class="text-xs text-neutral-500 mt-0.5">TypeScript · ★ 33,299 · 📈 631 stars today</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-blue-500/10 border-l-2 border-blue-500 text-neutral-700 dark:text-neutral-300">构建AI代理与生成式UI的前端全栈框架，支持React、Angular等多平台。</p>
+        </div>
+      </li>
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">3</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-blue-500 transition-colors">MemPalace/mempalace</a>
+          <p class="text-xs text-neutral-500 mt-0.5">Python · ★ 54,362 · 📈 446 stars today</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-blue-500/10 border-l-2 border-blue-500 text-neutral-700 dark:text-neutral-300">基准测试表现最优的开源AI记忆系统，为AI应用提供持久化记忆能力。</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <!-- AI News Card -->
+  <div class="card-bg rounded-2xl p-4 flex flex-col min-h-[420px] sprinkle-green">
+    <div class="flex items-center gap-3 mb-3 pb-3 border-b border-neutral-200/50 dark:border-neutral-700/50">
+      <div class="w-9 h-9 rounded-full bg-green-500/20 flex items-center justify-center text-sm font-semibold text-green-600 dark:text-green-400">AI</div>
+      <div>
+        <h2 class="text-lg font-bold">AI 媒体</h2>
+        <p class="text-xs text-neutral-500">OpenAI · DeepMind · HuggingFace</p>
+      </div>
+    </div>
+    <ol class="news-list flex-1 overflow-y-auto space-y-1 pr-1">
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">1</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-green-500 transition-colors">OpenAI 发布 GPT-5 技术预览</a>
+          <p class="text-xs text-neutral-500 mt-0.5">The Verge · 2小时前</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-green-500/10 border-l-2 border-green-500 text-neutral-700 dark:text-neutral-300">新模型在推理能力上实现重大突破，支持更长上下文和实时联网。</p>
+        </div>
+      </li>
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">2</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-green-500 transition-colors">DeepMind AlphaFold 3 开源</a>
+          <p class="text-xs text-neutral-500 mt-0.5">Nature · 5小时前</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-green-500/10 border-l-2 border-green-500 text-neutral-700 dark:text-neutral-300">蛋白质结构预测工具开放非商业用途，加速药物研发进程。</p>
+        </div>
+      </li>
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">3</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-green-500 transition-colors">HuggingFace 发布 SmolLM</a>
+          <p class="text-xs text-neutral-500 mt-0.5">HuggingFace Blog · 昨天</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-green-500/10 border-l-2 border-green-500 text-neutral-700 dark:text-neutral-300">轻量级开源模型，在移动设备上实现接近GPT-4性能。</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <!-- Game Tech Card -->
+  <div class="card-bg rounded-2xl p-4 flex flex-col min-h-[420px] sprinkle-purple">
+    <div class="flex items-center gap-3 mb-3 pb-3 border-b border-neutral-200/50 dark:border-neutral-700/50">
+      <div class="w-9 h-9 rounded-full bg-purple-500/20 flex items-center justify-center text-sm font-semibold text-purple-600 dark:text-purple-400">GT</div>
+      <div>
+        <h2 class="text-lg font-bold">游戏技术</h2>
+        <p class="text-xs text-neutral-500">Unreal · 80lv · RealTimeVFX</p>
+      </div>
+    </div>
+    <ol class="news-list flex-1 overflow-y-auto space-y-1 pr-1">
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">1</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-purple-500 transition-colors">UE 5.7 Niagara 新功能详解</a>
+          <p class="text-xs text-neutral-500 mt-0.5">Unreal Engine Blog · 昨天</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-purple-500/10 border-l-2 border-purple-500 text-neutral-700 dark:text-neutral-300">Scratch Pad 新增动态输入支持，VFX 创作效率提升。</p>
+        </div>
+      </li>
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">2</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-purple-500 transition-colors">Gaussian Splatting 在 UE5 中的实践</a>
+          <p class="text-xs text-neutral-500 mt-0.5">80 Level · 3小时前</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-purple-500/10 border-l-2 border-purple-500 text-neutral-700 dark:text-neutral-300">.ply 格式导入流程，配合 Niagara 实现实时渲染。</p>
+        </div>
+      </li>
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">3</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-purple-500 transition-colors">VFX 资源管理最佳实践</a>
+          <p class="text-xs text-neutral-500 mt-0.5">Real Time VFX · 6小时前</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-purple-500/10 border-l-2 border-purple-500 text-neutral-700 dark:text-neutral-300">大型项目中 Niagara 模块化组织与版本控制方案。</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <!-- Game News Card -->
+  <div class="card-bg rounded-2xl p-4 flex flex-col min-h-[420px] sprinkle-orange">
+    <div class="flex items-center gap-3 mb-3 pb-3 border-b border-neutral-200/50 dark:border-neutral-700/50">
+      <div class="w-9 h-9 rounded-full bg-orange-500/20 flex items-center justify-center text-sm font-semibold text-orange-600 dark:text-orange-400">GN</div>
+      <div>
+        <h2 class="text-lg font-bold">游戏新闻</h2>
+        <p class="text-xs text-neutral-500">PC Gamer · Kotaku · Polygon</p>
+      </div>
+    </div>
+    <ol class="news-list flex-1 overflow-y-auto space-y-1 pr-1">
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">1</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-orange-500 transition-colors">《GTA 6》确认 2026 秋季发售</a>
+          <p class="text-xs text-neutral-500 mt-0.5">PC Gamer · 1小时前</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-orange-500/10 border-l-2 border-orange-500 text-neutral-700 dark:text-neutral-300">Rockstar 公布最新预告片，展示 Vice City 新场景。</p>
+        </div>
+      </li>
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">2</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-orange-500 transition-colors">索尼宣布 PS6 开发计划</a>
+          <p class="text-xs text-neutral-500 mt-0.5">Kotaku · 4小时前</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-orange-500/10 border-l-2 border-orange-500 text-neutral-700 dark:text-neutral-300">次世代主机将采用 AMD 定制芯片，支持光追 2.0。</p>
+        </div>
+      </li>
+      <li class="flex gap-2.5 items-start p-2 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+        <span class="w-6 h-6 rounded-md bg-neutral-200/80 dark:bg-neutral-700/80 flex items-center justify-center text-xs font-semibold text-neutral-600 dark:text-neutral-400 shrink-0">3</span>
+        <div class="min-w-0">
+          <a href="#" class="text-sm font-medium group-hover:text-orange-500 transition-colors">Steam 夏季特卖启动</a>
+          <p class="text-xs text-neutral-500 mt-0.5">Polygon · 8小时前</p>
+          <p class="text-xs mt-1.5 px-2 py-1 rounded bg-orange-500/10 border-l-2 border-orange-500 text-neutral-700 dark:text-neutral-300">数千款游戏打折，最高降幅 90%。</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="text-center mt-12 pt-6 border-t border-neutral-200/50 dark:border-neutral-800/50 text-neutral-500 text-xs">
+  内容均来自原媒体，本站仅作摘要整理与回链。
+</footer>
+
+</body>
+</html>

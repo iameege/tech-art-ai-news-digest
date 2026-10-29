@@ -1,0 +1,2220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>游戏 技术 美术 每日新闻 · 2026-06-13</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --bg-card: rgba(255,255,255,0.7);
+    --fg: #1a1a1a;
+    --fg-soft: #666;
+    --muted: #999;
+    --border: rgba(0,0,0,0.08);
+    --accent-blue: #3b82f6;
+    --accent-green: #22c55e;
+    --accent-purple: #a855f7;
+    --accent-orange: #f97316;
+    --radius: 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: rgba(24,24,28,0.7);
+      --fg: #fafafa;
+      --fg-soft: #aaa;
+      --muted: #666;
+      --border: rgba(255,255,255,0.1);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { position: relative;
+    color: var(--fg);
+    line-height: 1.5;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .header-author {
+    color: #1a1a1a;
+    font-size: 12px;
+    margin-bottom: 2px;
+    font-weight: 600;
+  }
+  .header .date {
+    color: #1a1a1a;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .tab {
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--fg-soft);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab:hover { border-color: var(--accent-blue); color: var(--fg); }
+  .tab.active { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .tab .count {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-left: 4px;
+  }
+
+  /* Grid Layout */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* Card */
+  .card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+  }
+  .card.blue { border-top: 3px solid var(--accent-blue); }
+  .card.green { border-top: 3px solid var(--accent-green); }
+  .card.purple { border-top: 3px solid var(--accent-purple); }
+  .card.orange { border-top: 3px solid var(--accent-orange); }
+  .card.red { border-top: 3px solid #ef4444; }
+
+  /* Card Header */
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .card-meta {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* News List */
+  .news-list {
+    list-style: none;
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .news-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .news-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .news-list::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+  .news-list::-webkit-scrollbar-thumb:hover {
+    background: var(--muted);
+  }
+  .news-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+  .news-item:hover { background: rgba(0,0,0,0.04); }
+  @media (prefers-color-scheme: dark) {
+    .news-item:hover { background: rgba(255,255,255,0.05); }
+  }
+
+  .news-rank {
+    min-width: 24px;
+    height: 24px;
+    background: var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fg-soft);
+  }
+  .news-content { flex: 1; min-width: 0; }
+  .news-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--fg);
+    text-decoration: none;
+    display: block;
+  }
+  .news-title:hover { color: var(--accent-blue); }
+  .news-meta {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .news-time {
+    color: var(--accent-blue);
+    font-weight: 500;
+  }
+  .news-extra {
+    opacity: 0.8;
+  }
+  .news-summary {
+    font-size: 12px;
+    color: var(--fg);
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 2px solid var(--accent-blue);
+    padding: 6px 8px;
+    margin-top: 6px;
+    border-radius: 4px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: #fff;
+    font-size: 12px;
+  }
+
+  /* Card visibility for tab switching */
+  .hidden { display: none !important; }
+
+  /* Daily Digest Styles - 匹配 daily-digest-preview-v4.html */
+  .digest-container {
+    max-width: 900px;
+    margin: 0 auto 32px;
+    padding: 0 24px;
+  }
+  .narrative-highlight {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    color: var(--fg-soft);
+    background: rgba(255,255,255,0.85);
+    border-radius: 10px;
+    padding: 14px 18px;
+    border: 1px solid rgba(255,255,255,0.6);
+  }
+  .narrative-highlight h2 {
+    display: none;
+  }
+  .narrative-highlight p {
+    font-size: 13px;
+    color: #1a1a1a;
+    line-height: 1.5;
+  }
+  .cross-discovery {
+    background: rgba(168,85,247,0.75);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(168,85,247,0.85);
+  }
+  .cross-discovery h3 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .cross-discovery ul {
+    list-style: none;
+    font-size: 13px;
+    color: #fff;
+  }
+  .cross-discovery li {
+    padding: 3px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+  .cross-discovery li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #fff;
+    font-size: 11px;
+  }
+  .ab-layout {
+    display: flex;
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .ab-layout { flex-direction: column; }
+    .digest-container { padding: 0 16px; }
+  }
+  .importance-group, .domain-group {
+    flex: 1;
+    background: rgba(255,255,255,0.85);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .importance-group h3, .domain-group h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .importance-section {
+    margin-bottom: 10px;
+  }
+  .importance-section:last-child { margin-bottom: 0; }
+  .importance-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .importance-item {
+    font-size: 13px;
+    color: var(--fg);
+    padding: 3px 0;
+    border-bottom: none;
+    line-height: 1.4;
+    padding-left: 14px;
+    position: relative;
+  }
+  .importance-item::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent-blue);
+    font-size: 11px;
+  }
+  .domain-section {
+    margin-bottom: 10px;
+  }
+  .domain-section:last-child { margin-bottom: 0; }
+  .domain-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+  }
+  .domain-items {
+    font-size: 13px;
+    color: #1a1a1a;
+    line-height: 1.5;
+  }
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(160deg, #0b0e1a 0%, #171a2c 55%, #10131f 100%) center/cover no-repeat;
+  z-index: -2;
+}
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.2);
+  z-index: -1;
+}
+@media (prefers-color-scheme: dark) {
+  body::after { background: rgba(0,0,0,0.5); }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>游戏 技术 美术 每日新闻</h1>
+  <div class="header-author">By: 歌歌gege</div>
+  <div class="date">2026-06-13</div>
+</header>
+
+<nav class="tabs">
+<button class="tab active" data-tab="daily-digest">今日摘要 <span class="count">1</span></button>
+<button class="tab" data-tab="ai-news">AI技术新闻 <span class="count">23</span></button>
+<button class="tab" data-tab="unreal-engine">虚幻引擎 <span class="count">13</span></button>
+<button class="tab" data-tab="game-tech">游戏技术 <span class="count">15</span></button>
+<button class="tab" data-tab="game-news">游戏新闻 <span class="count">25</span></button>
+<button class="tab" data-tab="research">前沿研究 <span class="count">50</span></button>
+</nav>
+
+
+<div id="daily-digest-section" class="digest-container">
+  <div class="narrative-highlight">
+    <h2>今日叙事</h2>
+    <p>今天最重要的信号是AI Agent正式成为自主经济主体（Coinbase Agent交易、Polymarket 30%活动由AI完成），这标志着瓶颈从&#39;AI能否执行任务&#39;转移到&#39;人类如何设计Agent的激励函数与边界&#39;。同时，Anthropic Fable 5的递归自我改进循环和Cursor的Agent训练系统揭示了新范式：人机协作的核心不再是单次提示，而是构建能自我纠错的闭环工作流。</p>
+  </div>
+
+  
+  <div class="cross-discovery">
+    <h3>跨领域发现</h3>
+    <ul>
+      <li>金融交易 ↔ AI Agent：Coinbase推出Agent支付，Polymarket 30%交易来自AI，AI从辅助工具变为自主经济实体</li>
+      <li>机器人仿真 ↔ 游戏引擎：AMD Schola v2.1将K8s分布式训练与UE StateTree结合，强化学习在游戏引擎中的规模化直接反哺机器人训练</li>
+      <li>几何压缩 ↔ 跨平台3D：AMD与三星合作DGF开放几何压缩标准，解决海量3D资产（及未来AI生成3D）的传输与内存瓶颈</li>
+      <li>3D创作 ↔ AI政策：Anthropic赞助Blender开发基金，开源3D工具的AI政策制定将直接影响未来3D AIGC的底层管线</li>
+    </ul>
+  </div>
+  
+
+  <div class="ab-layout">
+    <div class="importance-group">
+      <h3>A. 重要性分级</h3>
+      
+      <div class="importance-section">
+        <div class="importance-label">🔴 高影响力</div>
+        <div class="importance-item">AI Agent成为自主经济主体 — Coinbase支持Agent自主交易，Polymarket 30%活动由AI完成，人类判断力需转向目标与边界设计</div>
+        <div class="importance-item">递归自我改进系统成为主流 — Fable 5闭环工作流与Cursor递归Agent系统表明，单次提示时代结束，自我纠错循环才是核心杠杆</div>
+        <div class="importance-item">NVIDIA发布首个Agentic编码基准 — 评估标准从单次推理转向多步工作流，重新定义AI编码的度量衡</div>
+      </div>
+      
+      
+      <div class="importance-section">
+        <div class="importance-label">🟡 值得关注</div>
+        <div class="importance-item">DiffusionGemma打破文本生成速度瓶颈 — 扩散模型用于文本生成，实现高吞吐量，打破自回归生成的延迟约束</div>
+        <div class="importance-item">DeepMind关注多Agent交互风险 — 数百万Agent交互带来的系统性风险被提上日程，约束了Agent规模化部署的安全假设</div>
+        <div class="importance-item">Anthropic入局Blender生态 — 结合Blender的AI政策更新，开源3D资产的AI化管线正在重塑</div>
+        <div class="importance-item">AMD Schola深化Unreal Engine强化学习集成 — 游戏引擎正式成为大规模分布式RL训练场，对齐机器人的仿真需求</div>
+      </div>
+      
+      
+      <div class="importance-section">
+        <div class="importance-label">🟢 信息速览</div>
+        <div class="importance-item">AI行业资本大整合 — SpaceX成首家万亿市值IPO，Anthropic/OpenAI筹备上市，Mistral融30亿欧，资本向头部集中</div>
+        <div class="importance-item">Meta AI部门内部危机与安全漏洞 — 6500人团队濒临反抗，且AI客服被黑客利用盗号，暴露规模化Agent的执行与安全脱节</div>
+        <div class="importance-item">AMD发布DirectX 12原生MLP推理库 — MiniDXNN让神经网络推理下放到着色器级别，为实时图形AI提供底层支持</div>
+        <div class="importance-item">AI生成诉讼与监管摩擦 — 法院被AI生成诉讼淹没，教皇发布AI通谕，社会制度正在消化AI冲击</div>
+      </div>
+      
+    </div>
+
+    <div class="domain-group">
+      <h3>B. 领域聚合</h3>
+      
+      <div class="domain-section">
+        <div class="domain-label">AI与技术</div>
+        <div class="domain-items">OpenAI准备S-1上市、Anthropic递交IPO申请与反击开源、Coinbase支持AI Agent自主交易、Polymarket超30%交易由AI完成、Fable 5递归自我改进循环、DeepMind研究多Agent交互风险、DiffusionGemma实现高吞吐文本生成、Meta AI部门陷入危机与安全漏洞、Mistral融资30亿欧元、AI生成诉讼冲击法院系统</div>
+      </div>
+      
+      
+      <div class="domain-section">
+        <div class="domain-label">游戏与引擎</div>
+        <div class="domain-items">AMD Schola v2.1集成UE5 StateTree与K8s分布式训练、AMD与三星发布开放几何压缩标准DGF及SuperCompression、NVIDIA发布首个Agentic编码基准、GOALS在掌机实现持续电竞性能优化、Sega分享游戏24年长线运营经验</div>
+      </div>
+      
+      
+      <div class="domain-section">
+        <div class="domain-label">美术与工具</div>
+        <div class="domain-items">Anthropic赞助Blender开发基金、Blender发布发展路线图及AI政策更新、3D艺术家分享Substance 3D Painter免费文件、角色与动画艺术创作分享</div>
+      </div>
+      
+      
+      <div class="domain-section">
+        <div class="domain-label">学术前沿</div>
+        <div class="domain-items">扩散模型用于文本生成提升吞吐量、NVIDIA TensorRT实现FP8量化到推理引擎转换、JAX与MaxText在Blackwell架构加速训练、联邦学习结合AI Agent实现Auto-FL、AMD RDNA 4架构WMMA矩阵操作优化指南</div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+
+    <div class="card green" data-tab="ai-news">
+      <div class="card-header">
+        <div class="card-icon">TL</div>
+        <div>
+          <div class="card-title">TLDR AI</div>
+          <div class="card-meta">2 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://tldr.tech/ai/2026-06-12" target="_blank" rel="noopener">OpenAI buys Ona 🤝, Anthropic backtracks 🔁, Xiaomi’s MiMo code 👨‍💻</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 08:00</span>
+            
+          </div>
+          <div class="news-summary">AI行业动态：OpenAI完成对Ona的收购；Anthropic撤回此前某项决策；小米发布MiMO模型相关代码。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://tldr.tech/ai/2026-06-11" target="_blank" rel="noopener">Dario Amodei policy 🏛️, DiffusionGemma ⚡, WhatsApp to unblock bots 🤖</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 08:00</span>
+            
+          </div>
+          <div class="news-summary">AI领域动态：Anthropic CEO Dario Amodei谈及AI政策；DiffusionGemma模型发布；WhatsApp计划解禁机器人功能。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card green" data-tab="ai-news">
+      <div class="card-header">
+        <div class="card-icon">MIT</div>
+        <div>
+          <div class="card-title">MIT Tech Review AI</div>
+          <div class="card-meta">1 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.technologyreview.com/2026/06/11/1138794/google-deepmind-is-worried-about-what-happens-when-millions-of-agents-start-to-interact/" target="_blank" rel="noopener">Google DeepMind is worried about what happens when millions of agents start to interact</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 19:00</span>
+            
+          </div>
+          <div class="news-summary">Google DeepMind资助研究数百万AI代理在线交互的潜在危险。其AGI安全与对齐研究主管Rohin Shah指出，具备自主能力的AI代理大规模普及可能带来未知风险，需提前进行安全防范。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card purple" data-tab="ai-news">
+      <div class="card-header">
+        <div class="card-icon">TC</div>
+        <div>
+          <div class="card-title">TechCrunch</div>
+          <div class="card-meta">10 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://techcrunch.com/2026/06/12/spacex-ipo-live-updates-on-everything-you-need-to-know/" target="_blank" rel="noopener">SpaceX IPO: Live updates on everything you need to know</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 07:15</span>
+            
+          </div>
+          <div class="news-summary">TechCrunch发布SpaceX首次公开募股（IPO）实时更新报道，内容涵盖潜在赢家、IPO前交易以及S-1注册文件中的关键信息。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://techcrunch.com/2026/06/12/metas-months-old-ai-unit-is-a-soul-crushing-gulag-say-the-engineers-stuck-inside-it/" target="_blank" rel="noopener">Meta’s months-old AI unit is a soul-crushing gulag, say the engineers stuck inside it</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 07:00</span>
+            
+          </div>
+          <div class="news-summary">新报告指出，Meta成立数月的AI部门被内部工程师形容为压抑的工作营。该部门拥有6500名员工，目前正处于内部反抗的边缘。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://techcrunch.com/2026/06/12/chinese-cybercrime-operation-that-used-ai-to-scam-hundreds-of-thousands-of-victims-sued-by-google/" target="_blank" rel="noopener">Chinese cybercrime operation that used AI to scam ‘hundreds of thousands of victims’ sued by Google</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 04:38</span>
+            
+          </div>
+          <div class="news-summary">Google起诉名为「Outsider Enterprise」的中国网络犯罪组织。该组织利用AI诈骗数十万名受害者，并在两周内发送了250万条短信。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://techcrunch.com/2026/06/12/spacex-ipo-closes-up-19-and-delivers-the-worlds-first-trillionaire/" target="_blank" rel="noopener">SpaceX IPO closes up 19% and delivers the world’s first trillionaire</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 04:20</span>
+            
+          </div>
+          <div class="news-summary">SpaceX于周五完成备受期待的IPO首秀，收盘价较135美元的发行价上涨19%，并由此诞生了全球首位万亿富翁。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://techcrunch.com/2026/06/12/spacex-president-gwynne-shotwell-just-gave-another-hint-at-a-tesla-merger/" target="_blank" rel="noopener">SpaceX president Gwynne Shotwell just gave another hint at a Tesla merger</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 03:28</span>
+            
+          </div>
+          <div class="news-summary">SpaceX总裁Gwynne Shotwell再次暗示SpaceX与Tesla可能进行合并，报道认为这两家公司的合并似乎已不可避免。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">6</span>
+        <div class="news-content">
+          <a class="news-title" href="https://techcrunch.com/2026/06/12/mistral-is-rumored-to-be-raising-e3b-at-e20-valuation/" target="_blank" rel="noopener">Mistral is rumored to be raising €3B at €20B valuation</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 01:38</span>
+            
+          </div>
+          <div class="news-summary">传闻AI公司Mistral正以200亿欧元（约231.5亿美元）的估值筹集30亿欧元资金，该估值较其C轮融资的117亿欧元近乎翻倍。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">7</span>
+        <div class="news-content">
+          <a class="news-title" href="https://techcrunch.com/2026/06/12/robinhood-sees-record-breaking-traffic-after-spacex-stock-debuts/" target="_blank" rel="noopener">Robinhood sees ‘record-breaking’ traffic after SpaceX stock debuts</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 01:05</span>
+            
+          </div>
+          <div class="news-summary">SpaceX股票上市后，交易平台Robinhood遭遇创纪录的流量冲击，导致部分客户出现间歇性服务中断，目前相关问题已得到解决。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">8</span>
+        <div class="news-content">
+          <a class="news-title" href="https://techcrunch.com/video/spacex-anthropic-and-openais-hot-ipo-summer/" target="_blank" rel="noopener">SpaceX, Anthropic, and OpenAI’s hot IPO summer</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 00:23</span>
+            
+          </div>
+          <div class="news-summary">IPO市场回暖，由SpaceX、Anthropic和OpenAI等公司引领。新缩写「MANGOS」（Meta或Microsoft、Anthropic、Nvidia、Google、OpenAI、SpaceX）正取代FAANG，其中半数公司即将上市。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">9</span>
+        <div class="news-content">
+          <a class="news-title" href="https://techcrunch.com/2026/06/12/elon-musk-becomes-the-worlds-first-trillionaire-after-spacexs-historic-ipo/" target="_blank" rel="noopener">Elon Musk becomes the world’s first trillionaire after SpaceX’s historic IPO</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 23:55</span>
+            
+          </div>
+          <div class="news-summary">SpaceX的历史性IPO使Elon Musk的账面财富突破1万亿美元，成为全球首位万亿富翁，其当前影响力达到前所未有的高度。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">10</span>
+        <div class="news-content">
+          <a class="news-title" href="https://techcrunch.com/2026/06/12/us-spy-law-to-expire-for-first-time-after-lawmakers-reject-trumps-controversial-pick-to-lead-spy-agencies/" target="_blank" rel="noopener">US surveillance law to expire for first time after lawmakers reject Trump’s controversial pick to lead spy agencies</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 19:43</span>
+            
+          </div>
+          <div class="news-summary">因美国国会议员拒绝Trump提名的情报机构负责人，授权NSA和FBI进行无证监视的「702条款」将于周五首次面临到期失效。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card orange" data-tab="ai-news">
+      <div class="card-header">
+        <div class="card-icon">X</div>
+        <div>
+          <div class="card-title">X AI Posts</div>
+          <div class="card-meta">10 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://x.com/aiedge_/status/2065064961999847849" target="_blank" rel="noopener">Fable 5 (Mythos) Prompting Masterclass by Anthropic</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 21:33</span>
+            <span class="news-extra">@aiedge_ · 69.5K 粉丝 · 700.1K 阅 · 506 赞 · 68 转</span>
+          </div>
+          
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://x.com/Recursive_SI/status/2064980090702962699" target="_blank" rel="noopener">First Steps Toward Automated AI Research</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 15:56</span>
+            <span class="news-extra">@Recursive_SI · 6.3K 粉丝 · 465.1K 阅 · 516 赞 · 71 转</span>
+          </div>
+          
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://x.com/0xCodez/status/2065089060104720776" target="_blank" rel="noopener">Build self-improving agent system with Fable 5 in 14 steps : loops, dynamic workflows, routines</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 23:09</span>
+            <span class="news-extra">@0xCodez · 6.4K 粉丝 · 371.8K 阅 · 515 赞 · 56 转</span>
+          </div>
+          
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://x.com/BrainsAndTennis/status/2065190286519906657" target="_blank" rel="noopener">Building a Good Vertical Agent</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 05:51</span>
+            <span class="news-extra">@BrainsAndTennis · 10.5K 粉丝 · 187.4K 阅 · 539 赞 · 45 转</span>
+          </div>
+          
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://x.com/TheAhmadOsman/status/2065307070044234186" target="_blank" rel="noopener">Anthropic&#39;s War on Opensource AI</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 13:35</span>
+            <span class="news-extra">@TheAhmadOsman · 61.0K 粉丝 · 74.9K 阅 · 507 赞 · 98 转</span>
+          </div>
+          
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">6</span>
+        <div class="news-content">
+          <a class="news-title" href="https://x.com/coinbase/status/2065137502462386663" target="_blank" rel="noopener">Coinbase for Agents: Your AI Agent Can Now Trade and Pay with Coinbase</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 02:22</span>
+            <span class="news-extra">@coinbase · 7.0M 粉丝 · 72.8K 阅 · 500 赞 · 62 转</span>
+          </div>
+          
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">7</span>
+        <div class="news-content">
+          <a class="news-title" href="https://x.com/RayDalio/status/2064758466447818954" target="_blank" rel="noopener">Principled Thinking and AI Need to Go Together </a>
+          <div class="news-meta">
+            <span class="news-time">06-11 01:15</span>
+            <span class="news-extra">@RayDalio · 2.2M 粉丝 · 72.6K 阅 · 515 赞 · 93 转</span>
+          </div>
+          
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">8</span>
+        <div class="news-content">
+          <a class="news-title" href="https://x.com/ORACLEAIFND/status/2065129607418745189" target="_blank" rel="noopener">ORACLE: Official AI Agents Trade on Polymarket  </a>
+          <div class="news-meta">
+            <span class="news-time">06-12 01:50</span>
+            <span class="news-extra">@ORACLEAIFND · 31.9K 粉丝 · 63.6K 阅 · 1.5K 赞 · 563 转</span>
+          </div>
+          
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">9</span>
+        <div class="news-content">
+          <a class="news-title" href="https://x.com/OracleTrdading/status/2065129055830118668" target="_blank" rel="noopener">ORACLE: Official AI Agents Trade on Polymarket  </a>
+          <div class="news-meta">
+            <span class="news-time">06-12 01:48</span>
+            <span class="news-extra">@OracleTrdading · 39.7K 粉丝 · 61.5K 阅 · 1.5K 赞 · 577 转</span>
+          </div>
+          
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">10</span>
+        <div class="news-content">
+          <a class="news-title" href="https://x.com/OracleTrdade/status/2065127980544999588" target="_blank" rel="noopener">ORACLE: Official AI Agents Trade on Polymarket  </a>
+          <div class="news-meta">
+            <span class="news-time">06-12 01:44</span>
+            <span class="news-extra">@OracleTrdade · 41.7K 粉丝 · 60.6K 阅 · 1.5K 赞 · 560 转</span>
+          </div>
+          
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card purple" data-tab="unreal-engine">
+      <div class="card-header">
+        <div class="card-icon">VFX</div>
+        <div>
+          <div class="card-title">Real Time VFX</div>
+          <div class="card-meta">10 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://realtimevfx.com/t/flamethrower-unreal-engine-5/30985#post_11" target="_blank" rel="noopener">Flamethrower (Unreal Engine 5)</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 04:38</span>
+            
+          </div>
+          <div class="news-summary">关于虚幻引擎5中的喷火器特效，社区成员建议绿色区域的粒子数量可减少约一半，火焰形状应增加不均匀感和间隙，并指出优化主流时损失了视觉冲击力。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://realtimevfx.com/t/unreal-niagara-for-loop-example/31093#post_7" target="_blank" rel="noopener">Unreal Niagara For Loop Example</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 23:11</span>
+            
+          </div>
+          <div class="news-summary">在UE5.5的虚幻Niagara For Loop示例中，Draw Sphere节点疑似存在Bug，仅能绘制5个数组位置中的2个，而使用Draw Box则运行正常。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://realtimevfx.com/t/flamethrower-unreal-engine-5/30985#post_10" target="_blank" rel="noopener">Flamethrower (Unreal Engine 5)</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 22:31</span>
+            
+          </div>
+          <div class="news-summary">开发者使用Substance Designer为虚幻引擎5喷火器特效制作了木质区域被击中时的趣味纹理贴图。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://realtimevfx.com/t/flamethrower-unreal-engine-5/30985#post_9" target="_blank" rel="noopener">Flamethrower (Unreal Engine 5)</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 22:29</span>
+            
+          </div>
+          <div class="news-summary">开发者澄清，喷火器特效展示中出现的卡顿感是由于GIF文件大小限制所致，并非特效本身问题。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://realtimevfx.com/t/flamethrower-unreal-engine-5/30985#post_8" target="_blank" rel="noopener">Flamethrower (Unreal Engine 5)</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 22:27</span>
+            
+          </div>
+          <div class="news-summary">开发者根据反馈优化了虚幻引擎5喷火器特效，在保留比参考图更多细节的同时，将原本1600个精灵和约330条指令大幅降低至约60个精灵。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">6</span>
+        <div class="news-content">
+          <a class="news-title" href="https://realtimevfx.com/t/unreal-niagara-for-loop-example/31093#post_6" target="_blank" rel="noopener">Unreal Niagara For Loop Example</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 20:27</span>
+            
+          </div>
+          <div class="news-summary">关于虚幻Niagara数组迭代的知识分享：在GPU粒子系统中通过Particle Update迭代数组时，必须至少存在1个粒子，否则Update不会执行。调试时每个球体使用了递增的半径。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">7</span>
+        <div class="news-content">
+          <a class="news-title" href="https://realtimevfx.com/t/unreal-niagara-fish-wpo-example/31095#post_4" target="_blank" rel="noopener">Unreal Niagara Fish WPO Example</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 16:22</span>
+            
+          </div>
+          <div class="news-summary">在虚幻Niagara鱼类WPO示例中，开发者选择在着色器中实现效果，而非使用第二套UV，以节省UV数据并作为技术挑战。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">8</span>
+        <div class="news-content">
+          <a class="news-title" href="https://realtimevfx.com/t/sharing-my-music-and-sound-fx-over-2000-tracks/3079?page=21#post_411" target="_blank" rel="noopener">Sharing My Music and Sound FX - Over 2000 Tracks</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 08:06</span>
+            
+          </div>
+          <div class="news-summary">创作者分享了其爵士/大乐队页面的音轨「SHUFFLIN」，该音轨已以更高质量的Ogg格式发布，支持循环播放，并提供免费下载。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">9</span>
+        <div class="news-content">
+          <a class="news-title" href="https://realtimevfx.com/t/megamans-megabuster-wip-feedback/31096#post_1" target="_blank" rel="noopener">Megamans MegaBuster-WIP Feedback</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 01:04</span>
+            
+          </div>
+          <div class="news-summary">开发者正在重制《洛克人》的MegaBuster特效，目标是将其重塑为《命运》或《质量效应》等现代风格。目前面临的问题是特效缺乏力量感，尤其是启动阶段。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">10</span>
+        <div class="news-content">
+          <a class="news-title" href="https://realtimevfx.com/t/unreal-niagara-fish-wpo-example/31095#post_3" target="_blank" rel="noopener">Unreal Niagara Fish WPO Example</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 00:35</span>
+            
+          </div>
+          <div class="news-summary">关于虚幻Niagara鱼类WPO示例的讨论：若使用完整3D鱼类网格，需自定义UV集，结合顶点法线和纹理来推动顶点实现运动效果。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card purple" data-tab="unreal-engine">
+      <div class="card-header">
+        <div class="card-icon">TA</div>
+        <div>
+          <div class="card-title">Tech-Artists.Org</div>
+          <div class="card-meta">3 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.tech-artists.org/t/anyone-else-still-fighting-maya-blender-asset-transfers/18414" target="_blank" rel="noopener">Anyone Else Still Fighting Maya / Blender Asset Transfers?</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 18:53</span>
+            
+          </div>
+          <div class="news-summary">本文讨论了Maya与Blender之间资产传递的繁琐流程（如导出FBX、检查轴心、层级与材质及修复错误）。为减少重复步骤，作者开发了一款小型Maya/Blender桥接工具以优化该工作流。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.tech-artists.org/t/maya-rigging-help-ostrich-neck-controls-are-difficult-to-pose/18413" target="_blank" rel="noopener">Maya Rigging Help: Ostrich Neck Controls Are Difficult to Pose</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 10:36</span>
+            
+          </div>
+          <div class="news-summary">一名学生寻求Maya绑定帮助：其正在为生物动画课程制作的鸵鸟绑定中，颈部控制器难以进行姿态调整与动画制作。尽管控制器功能上可用，但实际操作行为存在困难，希望得到优化建议。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.tech-artists.org/t/i-made-a-one-click-maya-blender-asset-sync/18411" target="_blank" rel="noopener">I made a One click Maya-Blender Asset Sync</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 10:36</span>
+            
+          </div>
+          <div class="news-summary">针对Maya与Blender间资产转移后需反复清理层级、变换、轴心及材质的痛点，作者开发了一款一键式Maya-Blender资产同步工具，大幅简化了资产在两款DCC软件间转移的清理与同步流程。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card green" data-tab="game-tech">
+      <div class="card-header">
+        <div class="card-icon">NV</div>
+        <div>
+          <div class="card-title">NVIDIA Developer</div>
+          <div class="card-meta">4 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://developer.nvidia.com/blog/nvidia-achieves-leading-agentic-coding-performance-on-first-agentic-ai-benchmark/" target="_blank" rel="noopener">NVIDIA Achieves Leading Agentic Coding Performance on First Agentic AI Benchmark</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 05:12</span>
+            
+          </div>
+          <div class="news-summary">英伟达在首个智能体AI基准测试中取得领先的智能体编码性能。该基准旨在衡量AI智能体改变推理工作负载复杂度的能力，填补了业界缺乏智能体推理评估标准的空白。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://developer.nvidia.com/blog/deploy-long-context-reasoning-and-agentic-workflows-with-minimax-m3-on-nvidia-accelerated-infrastructure/" target="_blank" rel="noopener">Deploy Long-Context Reasoning and Agentic Workflows with MiniMax M3 on NVIDIA Accelerated Infrastructure</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 22:43</span>
+            
+          </div>
+          <div class="news-summary">MiniMax M3模型可在英伟达加速基础设施上部署长上下文推理及智能体工作流。该方案整合了原本分散的文本、视觉等模型管线，解决企业级AI扩展时的碎片化问题。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://developer.nvidia.com/blog/one-click-multi-tenant-security-with-nvidia-quantum-infiniband/" target="_blank" rel="noopener">One-Click Multi-Tenant Security with  NVIDIA Quantum InfiniBand</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 03:52</span>
+            
+          </div>
+          <div class="news-summary">英伟达Quantum InfiniBand在统一网络管理器（UFM）中引入基于意图的安全配置文件，实现一键式多租户网络安全配置，简化数据中心多租户环境的安全管理。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://developer.nvidia.com/blog/run-diffusiongemma-on-nvidia-for-developer-ready-high-throughput-text-generation/" target="_blank" rel="noopener">Run DiffusionGemma on NVIDIA for Developer-Ready, High-Throughput Text Generation</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 00:16</span>
+            
+          </div>
+          <div class="news-summary">英伟达平台支持运行DiffusionGemma模型，为开发者提供高吞吐量文本生成方案。该模型突破了逐Token生成速度的限制，适用于聊天助手、副驾驶及智能体工作流等实时AI应用。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card red" data-tab="game-tech">
+      <div class="card-header">
+        <div class="card-icon">AMD</div>
+        <div>
+          <div class="card-title">AMD GPUOpen</div>
+          <div class="card-meta">1 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://gpuopen.com/learn/radeon-developer-tool-suite-shader-source-code/" target="_blank" rel="noopener">New AMD Radeon Developer Tool Suite update brings shader source code, Extended PIX Markers, and command-line capture</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 00:26</span>
+            
+          </div>
+          <div class="news-summary">AMD发布Radeon开发者工具套件更新，RGP 2.7新增着色器源码查看、指令级分歧度量及扩展PIX标记支持，并扩大硬件兼容性，同时更新了RGD、RRA、RMV等多个工具。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card green" data-tab="game-tech">
+      <div class="card-header">
+        <div class="card-icon">N4</div>
+        <div>
+          <div class="card-title">Neural4D</div>
+          <div class="card-meta">2 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://blog.neural4d.com/3d-printing/how-to-convert-image-to-stl-file/" target="_blank" rel="noopener">Best Tools to Convert Image to STL: Free &amp; AI Options 2026</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 19:44</span>
+            
+          </div>
+          <div class="news-summary">文章测评了2026年最佳的图像转STL工具，包括imagetostl.com、Meshy、Tripo3D和Neural4D，对比了哪些工具能生成真正的3D模型而非平面浮雕。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://blog.neural4d.com/image-to-3d/best-image-to-3d-model-ai/" target="_blank" rel="noopener">Best Image to 3D Model AI (2026 Compared): 4 Tools Reviewed</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 00:00</span>
+            
+          </div>
+          <div class="news-summary">对比评测2026年最佳的图像转3D模型AI工具，评估Neural4D、Rodin AI、Meshy和3D AI Studio的网格质量及其在生产管线中的表现。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card blue" data-tab="game-tech">
+      <div class="card-header">
+        <div class="card-icon">RF</div>
+        <div>
+          <div class="card-title">Roboflow</div>
+          <div class="card-meta">8 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://blog.roboflow.com/claude-fable-5-roboflow/" target="_blank" rel="noopener">Launch: Claude Fable 5 available in Roboflow</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 04:22</span>
+            
+          </div>
+          <div class="news-summary">Anthropic最强模型Claude Fable 5现已上线Roboflow平台，用户可在Roboflow Workflows和Roboflow Playground中使用该模型。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://blog.roboflow.com/ocr-lot-code-and-expiry-date-verification/" target="_blank" rel="noopener">OCR Lot Code and Expiry Date Verification for Medical Packaging</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 04:06</span>
+            
+          </div>
+          <div class="news-summary">医疗包装OCR批号与有效期验证方案：训练Roboflow定位模型以隔离打印标签字段，并结合Google Gemini验证批号和有效期。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://blog.roboflow.com/use-yolo26-semantic-segmentation-with-roboflow/" target="_blank" rel="noopener">Launch: Use YOLO26 Semantic Segmentation with Roboflow</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 02:15</span>
+            
+          </div>
+          <div class="news-summary">Roboflow平台宣布正式支持YOLO26语义分割模型。用户现可通过该平台应用YOLO26技术执行相关计算机视觉分割任务，提升处理效率。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://blog.roboflow.com/medical-device-packaging-inspection/" target="_blank" rel="noopener">Automate Medical Device Packaging Inspection and UDI Label Verification</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 02:01</span>
+            
+          </div>
+          <div class="news-summary">结合RF-DETR与Gemini 2.5 Pro模型，实现医疗器械包装检查自动化。该方案可验证UDI标签并识别包装缺陷，提升医疗领域的质检效率。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://blog.roboflow.com/claude-fable-5-for-vision/" target="_blank" rel="noopener">Claude Fable 5 for Vision: Evaluation and Benchmarks</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 01:57</span>
+            
+          </div>
+          <div class="news-summary">针对Claude Fable 5模型的视觉能力评估显示，其在视觉理解方面具备较强的推理能力，但尚未达到当前最先进视觉模型的水平。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">6</span>
+        <div class="news-content">
+          <a class="news-title" href="https://blog.roboflow.com/give-my-agent-eyes/" target="_blank" rel="noopener">Give My Agent Eyes</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 21:25</span>
+            
+          </div>
+          <div class="news-summary">通过结合RF-DETR与大语言模型（LMM），可构建具备感知、推理与执行能力的AI智能体管线，赋予Agent视觉处理功能。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">7</span>
+        <div class="news-content">
+          <a class="news-title" href="https://blog.roboflow.com/missing-and-null-image-annotations/" target="_blank" rel="noopener">The Difference Between Missing and Null Annotations</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 18:10</span>
+            
+          </div>
+          <div class="news-summary">文章解析了图像标注中「缺失」与「空值」的区别，说明两者在VOC XML和COCO JSON格式中的表示差异，并介绍如何利用Roboflow工具纠正误判，提升数据集质量。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">8</span>
+        <div class="news-content">
+          <a class="news-title" href="https://blog.roboflow.com/what-is-yolo27/" target="_blank" rel="noopener">What Is YOLO27?</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 03:46</span>
+            
+          </div>
+          <div class="news-summary">YOLO27模型引入了3D感知能力，主要通过YOLO-Depth和YOLO-StereoDepth两个变体实现，将YOLO系列的视觉检测从2D拓展至3D维度。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card purple" data-tab="game-news">
+      <div class="card-header">
+        <div class="card-icon">80</div>
+        <div>
+          <div class="card-title">80 Level</div>
+          <div class="card-meta">5 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://80.lv/articles/3d-character-artist-shares-a-funny-painting-like-model-of-a-viking-with-a-dragon/" target="_blank" rel="noopener">3D Character Artist Shares a Funny Painting-Like Model of a Viking with a Dragon</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 16:00</span>
+            
+          </div>
+          <div class="news-summary">3D角色艺术家分享了一个维京人与龙的趣味绘画风格3D模型，两者胡须相连，造型幽默。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://80.lv/articles/this-short-barnacle-animation-was-inspired-by-the-half-life-game/" target="_blank" rel="noopener">This Short Barnacle Animation Was Inspired by the Half-Life Game</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 16:00</span>
+            
+          </div>
+          <div class="news-summary">一段受游戏《半条命》启发的藤壶短动画发布，视觉效果非常逼真。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://80.lv/articles/take-a-look-at-this-reinterpretation-of-mindy-blanchard-from-dishonored-2/" target="_blank" rel="noopener">Take a Look at This Reinterpretation of Mindy Blanchard from Dishonored 2</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 15:30</span>
+            
+          </div>
+          <div class="news-summary">艺术家分享了对游戏《耻辱2》中角色明迪·布兰查德的重新演绎作品，其纹身细节备受瞩目。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://80.lv/articles/akko-dash-ultra-40-gram-gaming-mouse-with-8k-polling/" target="_blank" rel="noopener">Akko Dash Ultra: 40-Gram Gaming Mouse with 8K Polling</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 08:00</span>
+            
+          </div>
+          <div class="news-summary">Akko推出Dash Ultra游戏鼠标，重量仅40克，支持8K回报率，主打轻小便携与精准操控，售价59.99美元。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://80.lv/articles/this-arcade-game-allows-you-to-smack-targets-with-flying-footwear/" target="_blank" rel="noopener">This Arcade Game Allows You to Smack Targets With Flying Footwear</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 07:15</span>
+            
+          </div>
+          <div class="news-summary">一款趣味街机游戏推出，玩家可利用飞鞋击打目标，玩法新颖搞怪。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card orange" data-tab="game-news">
+      <div class="card-header">
+        <div class="card-icon">GI</div>
+        <div>
+          <div class="card-title">GamesIndustry.biz</div>
+          <div class="card-meta">5 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.gamesindustry.biz/asha-sharma-faces-tough-decisions-with-limited-room-for-manoeuvre-opinion" target="_blank" rel="noopener">Asha Sharma faces tough decisions with limited room for manoeuvre | Opinion</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 23:53</span>
+            
+          </div>
+          <div class="news-summary">Asha Sharma出任Xbox CEO首百日表现获普遍认可，打破了外界对其Core AI背景的质疑，但未来仍面临艰难决策与有限的回旋余地。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.gamesindustry.biz/gamesindustrybiz-summer-party-returns-wednesday-july-15" target="_blank" rel="noopener">The GamesIndustry.biz Summer Party returns Wednesday July 15</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 23:32</span>
+            
+          </div>
+          <div class="news-summary">GamesIndustry.biz夏季派对将于7月15日周三回归，地点再次设在布莱顿码头的Horatio&#39;s Bar。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.gamesindustry.biz/were-going-to-see-more-hit-games-coming-from-publishers-youve-never-heard-of-pocketpair-and-the-indie-publishing-revolution" target="_blank" rel="noopener">&quot;We&#39;re going to see more hit games coming from publishers you&#39;ve never heard of&quot; – Pocketpair and the indie publishing revolution</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 20:58</span>
+            
+          </div>
+          <div class="news-summary">《幻兽帕鲁》开发商Pocketpair发行负责人John Buckley表示，大厂发行条款与交易结构已脱离行业现状，未来将有更多名不见经传的发行商推出爆款游戏，独立发行正迎来变革。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.gamesindustry.biz/maxis-devs-detail-the-operational-challenges-behind-spores-nine-year-development-cycle" target="_blank" rel="noopener">&quot;I was given that opportunity to go crazy and do something kind of insane&quot; - Will Wright and Maxis look back on nine years making Spore</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 19:04</span>
+            
+          </div>
+          <div class="news-summary">Maxis及Will Wright回顾生物模拟游戏《孢子》九年开发周期，详细阐述了塑造该游戏的运营挑战与疯狂的创作机遇。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.gamesindustry.biz/playstack-ceo-new-owner-will-keep-it-separate-from-its-games-media-brands-including-gamesspot-and-fandom" target="_blank" rel="noopener">Playstack CEO: new owner will keep it separate from its games media brands including GamesSpot and Fandom</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 16:00</span>
+            
+          </div>
+          <div class="news-summary">Playstack首席执行官Harvey Elliott表示，公司被Fandom和GameSpot所有者收购后，新东家IMC承诺将维持Playstack独立运营，不会与上述游戏媒体品牌合并。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card orange" data-tab="game-news">
+      <div class="card-header">
+        <div class="card-icon">PC</div>
+        <div>
+          <div class="card-title">PC Gamer</div>
+          <div class="card-meta">5 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.pcgamer.com/games/horror/silent-hill-townfall-guide/" target="_blank" rel="noopener">Everything we know about Silent Hill: Townfall and its foggy Scottish town</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 07:00</span>
+            
+          </div>
+          <div class="news-summary">汇总恐怖游戏《寂静岭：Townfall》已知信息，本作设定在苏格兰多雾小镇，包含医疗创伤与收音机等系列经典元素。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.pcgamer.com/gaming-industry/microsoft-is-looking-to-speed-up-development-of-future-elder-scrolls-fallout-and-halo-games/" target="_blank" rel="noopener">Microsoft is looking to speed up development of future Elder Scrolls, Fallout, and Halo games</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 05:45</span>
+            
+          </div>
+          <div class="news-summary">微软正寻求加速未来《上古卷轴》《辐射》与《光环》游戏的开发。另有报告指出，微软可能考虑剥离或完全出售其Xbox部门。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.pcgamer.com/games/life-sim/paralives-floor-plans-custom-rug-mod/" target="_blank" rel="noopener">Tracing blueprints in Paralives is so easy it freed me from 25 years of The Sims&#39; grid-based tyranny</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 05:36</span>
+            
+          </div>
+          <div class="news-summary">生活模拟游戏《Paralives》的一款模组让描绘蓝图变得极为简便，实现了更逼真的楼层平面图设计，打破了《模拟人生》长达25年的网格限制。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.pcgamer.com/games/rpg/even-a-fantasy-game-like-skyrim-wont-let-me-be-a-trillionaire/" target="_blank" rel="noopener">Even a fantasy game like Skyrim won&#39;t let me be a trillionaire</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 05:07</span>
+            
+          </div>
+          <div class="news-summary">评论探讨游戏财富上限，即便在《天际》等奇幻游戏中玩家能变狼人或吸血鬼，却依然无法实现成为万亿富翁的设想。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.pcgamer.com/games/rpg-maker-forums-are-closing-nearly-15-years-of-knowledge-and-online-culture-are-at-risk-of-being-wiped/" target="_blank" rel="noopener">RPG Maker forums are closing, nearly 15 years of knowledge and online culture are at risk of being wiped</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 04:49</span>
+            
+          </div>
+          <div class="news-summary">RPG Maker论坛即将关闭，近15年的知识积累与网络文化面临被清除风险。开发商Gotcha Gotcha Games虽推出新论坛，但不会归档旧论坛数据。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card red" data-tab="game-news">
+      <div class="card-header">
+        <div class="card-icon">GC</div>
+        <div>
+          <div class="card-title">机核 GCORES</div>
+          <div class="card-meta">5 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.gcores.com/radios/215402" target="_blank" rel="noopener">机洞Vol.28｜你们现充能不能不那么现充</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 23:00</span>
+            
+          </div>
+          <div class="news-summary">机核电台「机洞」Vol.28，分享中年打工人参与Booom独立游戏制作体验、大学生社交困扰、离谱面试经历及情感烦恼等树洞话题。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.gcores.com/articles/215856" target="_blank" rel="noopener">《卡莉亚的炼金工房 ～夜之王国与追忆之道标～》公布最新情报</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 20:30</span>
+            
+          </div>
+          <div class="news-summary">光荣特库摩GUST工作室公布新作《卡莉亚的炼金工房》，预计2027年初登陆PS5、NS2、Xbox及Steam。游戏设定在阿拉迪斯大陆「玛那枯竭」危机中，主角卡莉亚拥有「吞食万物、知晓其特性」的神秘能力。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.gcores.com/articles/215845" target="_blank" rel="noopener">【抽奖】方寸之间，千军万马！Roguelike即时战略游戏《桌上谈兵》今日登陆Steam</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 17:25</span>
+            
+          </div>
+          <div class="news-summary">Roguelike即时战略游戏《桌上谈兵》登陆Steam，定价58元，首周七五折。游戏结合RTS兵种协同与地形博弈，融入Roguelike随机框架，每个决策均影响战局走向。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.gcores.com/radios/215832" target="_blank" rel="noopener">00后的租房难题与结婚感悟，录音笔 VOL.720</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 17:00</span>
+            
+          </div>
+          <div class="news-summary">机核GPASS会员专享节目「录音笔」VOL.720，记录办公室日常与工作短对话，本期聚焦00后租房难题与结婚感悟等碎碎念。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://www.gcores.com/articles/215836" target="_blank" rel="noopener">布拉德·皮特携战犬荒野求生：电影《野兽之心》发布首支预告</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 15:50</span>
+            
+          </div>
+          <div class="news-summary">派拉蒙出品电影《野兽之心》首曝预告，布拉德·皮特饰演前特种兵，讲述其与患PTSD的退役战犬在阿拉斯加坠机后荒野求生的故事。影片由大卫·阿耶执导，2026年9月北美上映。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card blue" data-tab="game-news">
+      <div class="card-header">
+        <div class="card-icon">IN</div>
+        <div>
+          <div class="card-title">indienova 独立精神</div>
+          <div class="card-meta">5 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://indienova.com/indie-game-development/wandering-the-maze-of-possibilities-what-makes-branching-narratives-in-games-so-unique/" target="_blank" rel="noopener">窥探可能性迷宫：多线性叙事的独特美学</a>
+          <div class="news-meta">
+            <span class="news-time">06-13 08:00</span>
+            
+          </div>
+          <div class="news-summary">探讨游戏多线性叙事的独特美学，关注玩家面对错过的可能性分支时的回应方式，揭示分支叙事在游戏设计中的独特价值。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://indienova.com/indie-game-news/sunset-sway-the-character-as-subjective-interface/" target="_blank" rel="noopener">作为主观界面的角色</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 14:00</span>
+            
+          </div>
+          <div class="news-summary">论文将虚拟互动角色重新定义为「主观界面」，旨在突显通过对话进行互动故事叙述的创新潜力，为互动叙事研究提供新视角。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://indienova.com/indie-game-news/itch-new-games-summary-of-last-week-2026-0601-0607-part1/" target="_blank" rel="noopener">itch 一周游戏汇：6月1日-6月7日（上）</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 08:00</span>
+            
+          </div>
+          <div class="news-summary">indienova发布2026年6月1日至7日期间itch平台独立游戏汇编，汇总近期上线的新游戏资讯，供玩家阅读与试玩体验。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://indienova.com/indie-game-news/wholesome-direct-2026-info-part-2/" target="_blank" rel="noopener">Wholesome Direct 2026 游戏情报汇总（下）</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 14:00</span>
+            
+          </div>
+          <div class="news-summary">indienova发布Wholesome Direct 2026游戏情报汇总下期，主要收录目前暂未提供试玩Demo的参展独立游戏资讯。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://indienova.com/indie-game-news/guide-2026-0608-0614-part-3/" target="_blank" rel="noopener">本周 Steam 值得关注的游戏 06.08 - 06.14（下）</a>
+          <div class="news-meta">
+            <span class="news-time">06-11 08:00</span>
+            
+          </div>
+          <div class="news-summary">汇总2026年6月8日至14日Steam平台值得关注的游戏（下）。受夏日游戏节与新品节影响，本周新游数量偏少，但适逢Steam弹幕射击游戏节，仍有多款热门作品推荐。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card blue" data-tab="research">
+      <div class="card-header">
+        <div class="card-icon">CV</div>
+        <div>
+          <div class="card-title">arXiv cs.CV (Computer Vision)</div>
+          <div class="card-meta">10 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12473" target="_blank" rel="noopener">Stereo Vision-Based Fall Prediction and Detection using Human Pose Estimation on the AMD Kria K26 SOM</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出一种基于双目视觉和人体姿态估计的跌倒预测与检测方法，并在AMD Kria K26 SOM上实现。该方法旨在为老年人提供便携、低功耗的跌倒预警与检测解决方案，以减少伤害并支持其健康生活。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12562" target="_blank" rel="noopener">HairPort: In-context 3D-aware Hair Import and Transfer for Images</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出HairPort方法，实现图像间具有3D感知的发型导入与转移。该方法允许用户在不物理改变头发的情况下探索新造型，在计算机图形学、视觉和视觉效果领域具有重要应用。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12575" target="_blank" rel="noopener">High-Fidelity Two-Step Image Generation via Teacher-Aligned End-to-End Distillation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">针对两步扩散蒸馏生成质量不高的问题，提出Z-Image Turbo++模型。该模型通过教师对齐的端到端蒸馏技术，实现了高保真的两步图像生成，突破了现有4至8步生成方法的局限。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12590" target="_blank" rel="noopener">Analyzing and Improving Fine-grained Preference Optimization in Medical LVLMs</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">针对医疗大型视觉语言模型存在的事实不一致、视觉定位差及与临床反馈不对齐问题，提出细粒度偏好优化方法。该方法旨在分析和改进医疗LVLMs，提升其在医学成像任务中的准确性与临床对齐度。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12601" target="_blank" rel="noopener">Dual-State Slot Attention: Decoupling Appearance and Identity for Video Object-Centric Learning</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出双状态槽注意力机制，用于无监督视频以对象为中心的学习。该方法通过解耦外观与身份，解决了现有基于槽的方法在复杂动态场景中难以维持稳定对象身份的问题，实现了持久对象级表征分解。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">6</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12628" target="_blank" rel="noopener">Context-Aware Feature-Fusion for Co-occurring Object Detection in Autonomous Driving</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出一种面向自动驾驶共现目标检测的上下文感知特征融合方法。该方法在极端复杂异构环境中，通过理解共现对象间的上下文关系，有效提升了对稀有类别和小尺度目标的精确定位与检测能力。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">7</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12633" target="_blank" rel="noopener">ECA: Efficient Continual Alignment for Open-Ended Image-to-Text Generation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出ECA（高效持续对齐）方法，用于开放式图文生成的增量学习。该方法使模型在持续为新图像生成准确且符合上下文文本的同时，保留已学知识，克服了增量学习中的灾难性遗忘问题。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">8</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12635" target="_blank" rel="noopener">CD-RCM: Generalizable Continuous-Depth Novel View Synthesis for Reflectance Confocal Microscopy</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出CD-RCM方法，用于反射共聚焦显微镜（RCM）的可泛化连续深度新视角合成。针对RCM获取的稀疏z堆栈因光学限制难以完整呈现的问题，该方法实现了非侵入式「光学活检」的高质量三维重建。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">9</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12671" target="_blank" rel="noopener">SalArt-VQA: Diagnosing Whether VLMs Understand Salient Artifacts in Generated Images</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出SalArt-VQA基准，用于诊断视觉语言模型是否能真正理解AI生成图像中的显著伪影。研究发现，即使模型在图像级别判断正确，也可能隐藏了对伪影理解的不足，该工作旨在揭示VLM在伪影分析上的局限。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">10</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12706" target="_blank" rel="noopener">VLADriveBench: Evaluating CoT-Action Relationship in VLA for Autonomous Driving</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出VLADriveBench基准，用于评估自动驾驶中视觉-语言-动作（VLA）模型的思维链与动作关系。现有基准仅评估轨迹质量，该基准着重评估思维链推理的相关性、一致性及对驾驶动作的因果影响。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card blue" data-tab="research">
+      <div class="card-header">
+        <div class="card-icon">GR</div>
+        <div>
+          <div class="card-title">arXiv cs.GR (Graphics)</div>
+          <div class="card-meta">10 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12562" target="_blank" rel="noopener">HairPort: In-context 3D-aware Hair Import and Transfer for Images</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出HairPort方法，实现图像间具有3D感知的发型导入与转移。该方法允许用户在不物理改变头发的情况下探索新造型，在计算机图形学、视觉和视觉效果领域具有重要应用。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.13041" target="_blank" rel="noopener">SeamEdit: A Black-Box VLM-Agnostic Pipeline for Large-Image Semantic Editing</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出SeamEdit，一种与视觉语言模型无关的黑盒管线，用于大图像语义区域编辑。该方法同时满足高生成质量和与周围内容自然融合的要求，无需依赖白盒模型，解决了大图编辑的整合难题。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.13312" target="_blank" rel="noopener">MagPlus: Bridging Micro-to-Regular Facial Expressions through Learnable Magnification</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出MagPlus方法，通过可学习的放大技术桥接微表情与常规面部表情。针对微表情细微且短暂、标注数据稀缺导致建模与生成困难的问题，该方法实现了从微表情到常规表情的平滑过渡与生成。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.13652" target="_blank" rel="noopener">World Tracing: Generative Pixel-Aligned Geometry Beyond the Visible</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出World Tracing方法，用于生成超越可见表面的像素对齐几何结构。现有图生3D方法常在保真度与完整性间折衷，深度估计局限于可见表面而图生3D模型常与输入不对齐，该方法实现了两者的统一。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.13655" target="_blank" rel="noopener">Flex4DHuman: Flexible Multi-view Video Diffusion for 4D Human Reconstruction</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出Flex4DHuman，一种用于4D人体重建的灵活多视角视频扩散模型。该方法仅通过相对相机姿态条件，将单目或稀疏多视角动态视频转换为同步的密集多视角视频，实现了高质量的4D人体重建。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">6</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2605.18215" target="_blank" rel="noopener">Tangent Blow-Ups for Processing Non-Manifold Geometry</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出切线爆破方法处理非流形几何。传统几何处理管线通常假设输入为具有唯一切平面的流形，但实际数据常包含边缘和角等尖锐特征。该方法有效解决了非流形几何的处理难题，突破了流形假设的限制。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">7</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.01538" target="_blank" rel="noopener">MPMWorlds: Material-Point-Method Simulations for Inferring and Extrapolating Physical Dynamics</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出MPMWorlds数据集，基于物质点法（MPM）物理仿真，用于推断和预测物理动态。该数据集涵盖可变形物体等丰富物理现象，旨在研究从视频中推断物理规律并在时间维度上进行外推的能力。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">8</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.06525" target="_blank" rel="noopener">Agentic Large Language Models for Automated Structural Analysis of 3D Frame Systems</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出将代理式大型语言模型应用于3D框架系统的自动化结构分析。该模型超越了传统的反应式文本生成，通过模块化任务分解实现自主工作流执行，展示了LLM在工程结构领域推理与自动化分析中的应用潜力。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">9</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2605.24488" target="_blank" rel="noopener">Appearance-Invariant Detection of Suggestive Motion via Laban Movement Descriptors</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出一种基于拉班运动描述符的外观不变暗示性动作检测方法。针对3D虚拟环境内容审核中暗示性动作检测的盲区，该方法仅依赖运动特征进行分类，实现了对暗示性动作的有效识别，填补了该领域空白。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">10</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12040" target="_blank" rel="noopener">A Lightweight Multi-Agent Framework for Automated Concrete Barrier Design</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出一种用于自动化混凝土护栏设计的轻量级多智能体框架。护栏设计需严格遵循AASHTO-LRFD等规范，该框架通过多智能体协作，实现了安全关键型钢筋混凝土护栏的合规自动化设计，改变了传统工程实践。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card blue" data-tab="research">
+      <div class="card-header">
+        <div class="card-icon">RO</div>
+        <div>
+          <div class="card-title">arXiv cs.RO (Robotics)</div>
+          <div class="card-meta">10 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12475" target="_blank" rel="noopener">Learning to Assist: Collaborative VLAs for Implicit Human-Robot Collaboration</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">人机协作结合人与机器人互补优势以提升效率，但现有系统多依赖手工设计流程，限制其扩展性与灵活性。本文提出协作视觉-语言-动作模型，用于隐式人机协作，旨在解决上述局限。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12499" target="_blank" rel="noopener">Action-Effect Memory Pretraining for Robot Manipulation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">本文提出动作效应记忆预训练框架，用于机器人操作。该框架从视觉-动作历史中学习紧凑的时间表征，区别于以往主要关注静态特征的机器人表征预训练方法，旨在提升操作任务表现。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12550" target="_blank" rel="noopener">Foresight: Iterative Reasoning About Clues that Matter for Navigation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">开放世界无地图导航需从稀疏语言指令中解决目标欠定问题，并推断相关环境线索。本文提出Foresight方法，通过迭代推理识别对导航至关重要的线索，以实现视外目标的精准导航。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12579" target="_blank" rel="noopener">G-MAPP: GPU-accelerated Multi-Agent Planning and Perception for Reactive Motion Generation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">非结构化环境中的反应式运动生成仍是机器人领域的挑战。由于无碰撞运动生成的计算复杂性，现有方法多针对静态环境。本文提出G-MAPP，一种GPU加速的多智能体规划与感知框架，实现动态环境下的反应式运动生成。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12603" target="_blank" rel="noopener">From Imitation to Alignment: Human-Preference Flow Policies for Long-Horizon Sidewalk Navigation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">自主长视距人行道导航对微型出行应用至关重要。与道路自动驾驶不同，人行道导航需处理复杂动态交互。本文提出人类偏好流策略，将模仿学习与人类偏好对齐，以解决长视距人行道导航问题。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">6</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12604" target="_blank" rel="noopener">EgoEngine: From Egocentric Human Videos to High-Fidelity Dexterous Robot Demonstrations</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">灵巧操作受限于大规模机器人示范数据的采集成本。自我中心视角的人类视频提供了多样化操作行为来源，但直接用于机器人学习需跨越具身差异。本文提出EgoEngine，将人类视频转化为高保真灵巧机器人示范数据。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">7</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12614" target="_blank" rel="noopener">DARRMS -- An Efficient Algorithm for Dynamic Attention Radius in Resource-Constrained Multi-Agent Systems</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">多智能体系统在机器人、网络安全和自动驾驶规划等领域至关重要，但常受限于计算资源。本文提出DARRMS算法，针对资源受限的多智能体系统，动态调整注意力半径，以实现高效的资源分配与协同计算。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">8</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12690" target="_blank" rel="noopener">EWAM: An Enhanced World Action Model for Closed-Loop Online Adaptation in Embodied Intelligence</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">本文提出增强世界动作模型，一种基于预训练且完全冻结的Cosmos3骨干网络构建的闭环在线适应架构。EWAM在零样本任务协议下进行评估，旨在解决具身智能中的闭环在线适应问题。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">9</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12728" target="_blank" rel="noopener">EquiDexFlow: Contact-Grounded SE(3)-Equivariant Dexterous Grasp Generative Flows</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">多数灵巧抓取生成器将接触力推迟至下游验证，导致运动学合理的姿态可能无法满足物理稳定抓取条件。本文提出EquiDexFlow，一种基于接触的SE(3)等变灵巧抓取生成流模型，在生成阶段即考虑接触力以保障抓取稳定。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">10</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12759" target="_blank" rel="noopener">Sparse2Act: Learning Action-Aligned Sparse 3D Representations for Cross-Domain Robot Manipulation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">显式3D表征能暴露物体形状和空间几何，利于机器人操作，但稀疏3D编码器常通过下游任务学习，缺乏动作对齐。本文提出Sparse2Act，学习动作对齐的稀疏3D表征，以实现跨域机器人操作。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card blue" data-tab="research">
+      <div class="card-header">
+        <div class="card-icon">AI</div>
+        <div>
+          <div class="card-title">arXiv cs.AI (Artificial Intelligence)</div>
+          <div class="card-meta">10 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12451" target="_blank" rel="noopener">ToolSense: A Diagnostic Framework for Auditing Parametric Tool Knowledge in LLMs</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">大语言模型作为智能体部署于大型工具目录时面临工具检索瓶颈。基于嵌入的检索方法可能无法充分捕捉专业工具语义。本文提出ToolSense，一个用于审计大模型参数化工具知识的诊断框架，以评估其工具调用能力。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12563" target="_blank" rel="noopener">Arbor: Tree Search as a Cognition Layer for Autonomous Agents</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">Arbor是一个多智能体框架，将结构化树搜索作为自主智能体的认知层，适用于大型有状态动作空间。以往的自主优化系统针对孤立目标操作，Arbor通过树搜索增强了智能体在复杂空间中的决策与规划能力。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12587" target="_blank" rel="noopener">Strategic Decision Support for AI Agents</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">传统决策支持研究人类如何利用机器学习模型做出更好决策。在现代智能体系统中，角色发生反转：AI智能体代表用户行动，而人类提供监督。本文研究针对AI智能体的战略决策支持，以优化人机协作决策过程。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12594" target="_blank" rel="noopener">Pythagoras-Prover: Advancing Efficient Formal Proving via Augmented Lean Formalisation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">现代Lean定理证明器因验证数据稀缺和形式化证明搜索的长推理轨迹，需大量计算资源。本文提出Pythagoras-Prover，通过增强的Lean形式化方法推进高效形式化证明，降低监督微调与推理的计算开销。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12616" target="_blank" rel="noopener">PersonaDrive: Human-Style Retrieval-Augmented VLA Agents for Closed-Loop Driving Simulation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">闭环驾驶模拟器中的非自车交通智能体行为通常同质化，由规则或单一行为模型生成。本文提出PersonaDrive，一种类人风格的检索增强视觉-语言-动作智能体，用于生成多样化、具个性特征的交通行为，提升模拟真实感。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">6</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12618" target="_blank" rel="noopener">&quot;Did you lie?&quot; Evaluating Lie Detectors across Model Scale and Belief-Verified Model Organisms</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">针对语言模型的鲁棒测谎仪可为审计和监测模型行为提供强大技术，但评估需在模型确信相反事实的测试床上进行。本文在信念验证模型和不同模型规模上评估测谎仪，以检验其有效性与鲁棒性。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">7</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12657" target="_blank" rel="noopener">TrajGenAgent: A Hierarchical LLM Agent for Human Mobility Trajectory Generation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">人类移动数据对交通、城市规划等至关重要，但大规模采集成本高且受隐私限制。现有合成轨迹生成方法存在局限。本文提出TrajGenAgent，一种分层大语言模型智能体，用于生成逼真的人类移动轨迹。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">8</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12674" target="_blank" rel="noopener">Evoflux: Inference-Time Evolution of Executable Tool Workflows for Compact Agents</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">紧凑型语言模型降低了工具智能体的成本与延迟，但MCP风格工具使用需从实时目录发现工具、满足模式并保持状态。本文提出Evoflux，在推理时演化可执行工具工作流，以提升紧凑智能体的工具调用能力。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">9</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12683" target="_blank" rel="noopener">From AGI to ASI</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">过去十年，构建人类水平的人工通用智能已从推测变为许多大型AI机构的下个十年目标。实现该目标将产生深远影响。本文探讨了从AGI向人工超级智能（ASI）的发展路径及其潜在影响与挑战。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">10</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.12702" target="_blank" rel="noopener">Deployment-Centered Evaluation: Predicting Query-Level Rejection Risk in a Clinical LLM System</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">大语言模型日益整合进临床系统，评估其实际效用至关重要。静态基准多衡量正确性而非用户接受度。本文提出以部署为中心的评估方法，预测临床大模型系统在查询级别的拒绝风险，以优化系统实际应用表现。</div>
+        </div>
+      </li></ol>
+    </div>
+
+    <div class="card blue" data-tab="research">
+      <div class="card-header">
+        <div class="card-icon">LG</div>
+        <div>
+          <div class="card-title">arXiv cs.LG (Machine Learning)</div>
+          <div class="card-meta">10 条</div>
+        </div>
+      </div>
+      <ol class="news-list">
+      <li class="news-item">
+        <span class="news-rank">1</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.11192" target="_blank" rel="noopener">Restless bandits with imperfect binary feedback: PCL-indexability analysis and computation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">针对感知误差下的机会频谱访问，研究具有二进制潜在状态与不完美二进制反馈的不安定强盗问题，并为相关信念状态模型开发部分守恒定律（PCL）方法进行分析与计算。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">2</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.11201" target="_blank" rel="noopener">To Intervene or Not: Guiding Inference-time Alignment with Probabilistic Model Blending</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">针对大型语言模型的安全对齐需求，提出利用概率模型混合指导推理时干预的方法，以更低成本实现模型安全、有效地响应用户指令。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">3</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.11205" target="_blank" rel="noopener">Dual-Stance Evaluation of Sycophancy: The Structure of Agreement and the Limits of Intervention</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">针对大型语言模型中的谄媚行为，提出「双立场评估」方法。该方法揭示减少谄媚的激活引导干预可能同时抑制模型对事实正确陈述的同意，明确了干预的局限性。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">4</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.11235" target="_blank" rel="noopener">Few-Shot Resampling for Scalable Statistically-Sound Data Mining</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">针对模式挖掘与图分析等数据挖掘任务中统计显著性评估的计算挑战，提出少样本重采样方法，以实现可扩展且统计可靠的知识发现。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">5</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.11243" target="_blank" rel="noopener">ProHiFlo: Hierarchical Flow Matching with Functional Guidance for De Novo Protein Generation</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出ProHiFlo方法，结合功能引导的分层流匹配技术用于从头蛋白质生成，克服了现有扩散与流匹配方法通常仅在单一分辨率下操作的局限性，在治疗设计与合成生物学领域具应用潜力。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">6</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.11247" target="_blank" rel="noopener">Physics-informed generative AI for semiconductor manufacturing: Enforcing hard physical constraints in generative models by construction</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">针对半导体制造等领域受硬物理约束而非感知合理性支配的特点，提出物理信息生成式AI方法，通过构造方式在生成模型中强制执行硬物理约束，以确保生成设计的物理有效性。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">7</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.11251" target="_blank" rel="noopener">Mechanical Field Networks: Structured Neural Dynamics for Multivariate Systems</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出机械场网络，用于多变量系统的结构化神经动力学建模。该方法结合可解释动力学与灵活状态转移学习，旨在揭示仅通过轨迹观测的多变量系统隐藏的联合动力学机制。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">8</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.11255" target="_blank" rel="noopener">Bernstein-Schur Kernels: Random Features by Sketched Modulation and Radial Randomization</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">研究Bernstein-Schur核，通过草图调制与径向随机化提取随机特征，解决了介于平移不变核与点积核模板之间的非平稳核难以利用传统随机特征逼近的问题。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">9</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.11258" target="_blank" rel="noopener">Loss Landscape Diagnosis for Gradient-Based Gray-Scott System Inversion: Disentangling the Roles of PINN Components</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">针对反应扩散系统的梯度反演问题，诊断Gray-Scott系统反演的损失景观，解耦物理信息神经网络各组件作用，并探讨直接通过偏微分方程结构反向传播的潜力。</div>
+        </div>
+      </li>
+
+      <li class="news-item">
+        <span class="news-rank">10</span>
+        <div class="news-content">
+          <a class="news-title" href="https://arxiv.org/abs/2606.11262" target="_blank" rel="noopener">PermDoRA -- Understanding Adapter Interference in Language Models: Limits of Parameter-Space Geometry</a>
+          <div class="news-meta">
+            <span class="news-time">06-12 12:00</span>
+            
+          </div>
+          <div class="news-summary">提出PermDoRA方法，研究大型语言模型中的适配器干扰问题。研究揭示了参数空间几何在解释适配器组合干扰及实现模块化领域特定行为方面的局限性。</div>
+        </div>
+      </li></ol>
+    </div>
+</div>
+
+<footer class="footer">内容均来自原媒体，本站仅作摘要整理与回链。</footer>
+
+<script>
+  document.querySelectorAll('.tabs .tab').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      // Update tab active state
+      document.querySelectorAll('.tabs .tab').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      // Show/hide cards and digest
+      var tabId = btn.dataset.tab;
+      var digestEl = document.getElementById('daily-digest-section');
+      var gridEl = document.querySelector('.grid');
+      if (digestEl) {
+        digestEl.classList.toggle('hidden', tabId !== 'daily-digest');
+      }
+      if (gridEl) {
+        gridEl.classList.toggle('hidden', tabId === 'daily-digest');
+      }
+      document.querySelectorAll('.card').forEach(function(card) {
+        if (card.dataset.tab === tabId) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+  // Initialize: show daily-digest, hide grid
+  document.addEventListener('DOMContentLoaded', function() {
+    var gridEl = document.querySelector('.grid');
+    if (gridEl) gridEl.classList.add('hidden');
+  });
+  </script>
+</body>
+</html>
