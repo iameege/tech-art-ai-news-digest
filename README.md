@@ -69,7 +69,7 @@ The project tracks **Unreal Engine, DCC tools (Maya / Houdini / Blender), real-t
 Requires Node 20+ and a git CLI; an LLM backend (default: Claude Code CLI, billed to your Max plan).
 
 ```bash
-git clone https://github.com/<you>/tech-art-ai-news-digest.git && cd tech-art-ai-news-digest
+git clone https://github.com/iameege/tech-art-ai-news-digest.git && cd tech-art-ai-news-digest
 npm install
 cp .env.example .env.local        # then edit: pick a backend + set keys
 npm run dry-run                   # fetch-only sanity check (~30s, no LLM)
@@ -85,7 +85,7 @@ Schedule it daily with `node scripts/install.mjs [--at 08:00]` (Windows Task Sch
 2. **Settings → Pages** → deploy from `gh-pages` / root.
 3. Add a **secret** `ANTHROPIC_API_KEY` (or `OPENAI_API_KEY` / `DEEPSEEK_API_KEY` / `MINIMAX_API_KEY`).
 4. Set optional **variables**: `REPORT_HOUR=8`, `REPORT_TZ=Asia/Shanghai`, `REPORT_LOCALE=en`, `LLM_MODEL=…`.
-5. Trigger once manually from the Actions tab — the report is then live at `https://<you>.github.io/tech-art-ai-news-digest/` and self-updates daily.
+5. Trigger once manually from the Actions tab — the report is then live at `https://iameege.github.io/tech-art-ai-news-digest/` and self-updates daily.
 
 The workflow ships a time-zone aware gate (chosen hour in your TZ) with a catchup branch guarding against GitHub Actions silently dropping scheduled runs.
 

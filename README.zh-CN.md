@@ -69,7 +69,7 @@ ATS 式扫描或 LLM 审查者会从仓库读到的具体工程信号:
 需要 Node 20+ 和 git CLI;需要一个 LLM 后端(默认:Claude Code CLI,计入 Max 订阅)。
 
 ```bash
-git clone https://github.com/<you>/tech-art-ai-news-digest.git && cd tech-art-ai-news-digest
+git clone https://github.com/iameege/tech-art-ai-news-digest.git && cd tech-art-ai-news-digest
 npm install
 cp .env.example .env.local        # 然后编辑:选一个后端 + 填 key
 npm run dry-run                   # 仅抓取 sanity check(~30s,不调 LLM)
@@ -85,7 +85,7 @@ npm run open                      # 打开今天的简报
 2. **Settings → Pages** → 从 `gh-pages` / root 部署。
 3. 添加 **secret** `ANTHROPIC_API_KEY`(或 `OPENAI_API_KEY` / `DEEPSEEK_API_KEY` / `MINIMAX_API_KEY`)。
 4. 设置可选 **variables**:`REPORT_HOUR=8`、`REPORT_TZ=Asia/Shanghai`、`REPORT_LOCALE=en`、`LLM_MODEL=…`。
-5. 从 Actions 标签页手动触发一次——简报随后发布在 `https://<you>.github.io/tech-art-ai-news-digest/` 并每日自动更新。
+5. 从 Actions 标签页手动触发一次——简报随后发布在 `https://iameege.github.io/tech-art-ai-news-digest/` 并每日自动更新。
 
 工作流内置时区感知闸门(在你所在时区的小时触发),并有 catchup 分支防止 GitHub Actions 静默丢弃定时运行。
 
