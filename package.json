@@ -1,7 +1,26 @@
 {
-  "name": "daily-brief",
+  "name": "tech-art-ai-news-digest",
   "version": "0.1.0",
   "private": true,
+  "description": "LLM research pipeline for Technical Artists, Pipeline TDs and game production — ingests 33 RSS/API sources (Unreal, DCC, VFX, procedural, 3D-AI), enriches them with pluggable LLM backends, ranks by TA-workflow impact, and renders a self-contained HTML digest with i18n and GitHub Actions automation.",
+  "keywords": [
+    "technical-artist",
+    "pipeline-td",
+    "llm",
+    "llm-pipeline",
+    "prompt-engineering",
+    "ai-workflow",
+    "news-digest",
+    "unreal-engine",
+    "digital-art",
+    "vfx",
+    "procedural-content",
+    "data-pipeline",
+    "automation",
+    "typescript",
+    "github-actions",
+    "rss"
+  ],
   "scripts": {
     "dry-run": "tsx scripts/dry-run.ts",
     "daily": "tsx scripts/daily.ts",

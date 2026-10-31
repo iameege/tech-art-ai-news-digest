@@ -15,7 +15,7 @@ import { V2EX_OFF_TOPIC_RE } from "../sources/v2ex";
  */
 const TEXTS_ZH = {
   siteTitle: "游戏 技术 美术 每日新闻",
-  siteAuthor: "By: 歌歌gege",
+  siteAuthor: "By: tech-art-ai-news-digest",
   catTech: "AI技术新闻",
   catResearch: "前沿研究",
   catGames: "游戏新闻",
@@ -33,7 +33,7 @@ const TEXTS_ZH = {
 
 const TEXTS_EN: typeof TEXTS_ZH = {
   siteTitle: "Game Tech Art Daily News",
-  siteAuthor: "By: Gege",
+  siteAuthor: "By: tech-art-ai-news-digest",
   catTech: "AI News",
   catResearch: "Frontier Research",
   catGames: "Game News",

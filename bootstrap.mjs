@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 /**
- * One-line installer for the daily-brief digest pipeline. Cross-platform.
+ * One-line installer for the tech-art-ai-news-digest digest pipeline. Cross-platform.
  *
- *   curl -sSL https://raw.githubusercontent.com/<your-account>/daily-brief/main/bootstrap.mjs | node
+ *   curl -sSL https://raw.githubusercontent.com/<your-account>/tech-art-ai-news-digest/main/bootstrap.mjs | node
  *
  * On Windows PowerShell:
- *   irm https://raw.githubusercontent.com/<your-account>/daily-brief/main/bootstrap.mjs | node -
+ *   irm https://raw.githubusercontent.com/<your-account>/tech-art-ai-news-digest/main/bootstrap.mjs | node -
  *
  * Default behavior:
- *   - Clones the repo to ~/daily-brief (or %USERPROFILE%\daily-brief on Windows)
+ *   - Clones the repo to ~/tech-art-ai-news-digest (or %USERPROFILE%\tech-art-ai-news-digest on Windows)
  *   - npm install
  *   - node scripts/install.mjs --global
  *
- * After install: /run-daily, /check-daily, and the daily-brief skill all work
+ * After install: /run-daily, /check-daily, and the tech-art-ai-news-digest skill all work
  * from any Claude Code session.
  *
  * Custom options:
@@ -24,8 +24,8 @@ import os from "node:os";
 import path from "node:path";
 import { execSync, spawnSync } from "node:child_process";
 
-const REPO_DEFAULT = "https://github.com/<your-account>/daily-brief.git";
-const TARGET_DEFAULT = path.join(os.homedir(), "daily-brief");
+const REPO_DEFAULT = "https://github.com/<your-account>/tech-art-ai-news-digest.git";
+const TARGET_DEFAULT = path.join(os.homedir(), "tech-art-ai-news-digest");
 const AT_DEFAULT = "08:00";
 
 function parseArgs(argv) {
@@ -48,7 +48,7 @@ function parseArgs(argv) {
 const args = parseArgs(process.argv.slice(2));
 
 if (args.help) {
-  console.log(`daily-brief bootstrap installer
+  console.log(`tech-art-ai-news-digest bootstrap installer
 
 Usage:
   node bootstrap.mjs [options]
@@ -62,7 +62,7 @@ Options:
   process.exit(0);
 }
 
-console.log("=== daily-brief bootstrap ===");
+console.log("=== tech-art-ai-news-digest bootstrap ===");
 console.log(`Platform: ${process.platform}`);
 console.log(`Repo:     ${args.repo}`);
 console.log(`Target:   ${args.target}`);
@@ -160,9 +160,9 @@ if (!hasCommand("claude")) {
 console.log("\nTry it:");
 console.log("  - Claude Code users — open Claude Code anywhere, type:  /run-daily");
 if (process.platform === "win32") {
-  console.log("  - Or:  Start-ScheduledTask -TaskName DailyBrief");
+  console.log("  - Or:  Start-ScheduledTask -TaskName TechArtAINewsDigest");
 } else if (process.platform === "darwin") {
-  console.log("  - Or:  launchctl start com.daily-brief");
+  console.log("  - Or:  launchctl start com.tech-art-ai-news-digest");
 } else {
   console.log("  - Or wait until the cron trigger fires");
 }

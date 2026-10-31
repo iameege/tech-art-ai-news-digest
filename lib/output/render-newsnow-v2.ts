@@ -11,7 +11,7 @@ import {
 // ----- i18n -----
 const TEXTS_ZH = {
   siteTitle: "游戏 技术 美术 每日新闻",
-  siteAuthor: "By: 歌歌gege",
+  siteAuthor: "By: tech-art-ai-news-digest",
   catTech: "AI技术新闻",
   catFinance: "前沿研究",
   catGames: "游戏新闻",

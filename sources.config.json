@@ -193,6 +193,34 @@
     ]
   },
   {
+    "id": "blendernation",
+    "name": "BlenderNation",
+    "type": "rss",
+    "url": "https://www.blendernation.com/feed/",
+    "category": "games",
+    "subcategory": "game-tech",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
+    "id": "sidefx-youtube",
+    "name": "SideFX (Houdini)",
+    "type": "rss",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCegWLyW4CYzph4dYW-gYy0g",
+    "category": "games",
+    "subcategory": "game-tech",
+    "limit": 5,
+    "enabled": true,
+    "locales": [
+      "zh",
+      "en"
+    ]
+  },
+  {
     "id": "gdc-technology",
     "name": "GDC Technology",
     "type": "rss",

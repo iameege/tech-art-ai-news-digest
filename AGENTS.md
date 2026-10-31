@@ -4,7 +4,7 @@ Operational knowledge for any AI coding agent working on this repo (Claude Code,
 
 ## What this project is
 
-`daily-brief` is a local-first pipeline that fetches 33 RSS / API news sources daily, runs LLM enrichment, and renders a single self-contained HTML report — a Technical-Artist-curated digest of AI / game / research news. It runs on the user's machine via the OS scheduler, OR in GitHub Actions publishing to GitHub Pages. No web framework, no DB, no servers.
+`tech-art-ai-news-digest` is a local-first pipeline that fetches 33 RSS / API news sources daily, runs LLM enrichment, and renders a single self-contained HTML report — a Technical-Artist-curated digest of AI / game / research news. It runs on the user's machine via the OS scheduler, OR in GitHub Actions publishing to GitHub Pages. No web framework, no DB, no servers.
 
 The repo's `CLAUDE.md` includes this file via `@AGENTS.md`. Don't add stack-specific lore (Next.js, etc.) — there's none in this codebase.
 
@@ -93,5 +93,5 @@ sources.config.json   # SINGLE SOURCE OF TRUTH for the source registry
 
 - `README.md` — user-facing intro, install, configuration
 - `AGENTS.md` (this file) — conventions for agents working in the repo
-- `.claude/skills/daily-brief/SKILL.md` — fuller operational reference (Claude Code auto-loads it; other agents can read it directly)
+- `.claude/skills/tech-art-ai-news-digest/SKILL.md` — fuller operational reference (Claude Code auto-loads it; other agents can read it directly)
 - `sources.config.json` — see what sources look like in practice

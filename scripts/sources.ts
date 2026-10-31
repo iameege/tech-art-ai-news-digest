@@ -73,7 +73,7 @@ function list(all: SourceDef[]): void {
   console.log(`总计: ${total} 个 · enabled: ${enabled} · 当前 locale 有效: ${activeInLocale}`);
   console.log("");
   console.log(`改源配置: 直接编辑 sources.config.json（JSON 数组）`);
-  console.log(`切 locale: 在 .env.local 设 REPORT_LOCALE=en (默认 zh)`);
+  console.log(`切 locale: 在 .env.local 设 REPORT_LOCALE=zh (默认 en)`);
   console.log("");
 }
 

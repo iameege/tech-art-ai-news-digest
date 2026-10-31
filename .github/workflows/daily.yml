@@ -10,7 +10,7 @@ name: Daily Brief
 #        - Variables (all optional, sensible defaults provided):
 #            LLM_BACKEND     anthropic | openai | deepseek | minimax    (default: anthropic)
 #            LLM_MODEL       e.g. claude-sonnet-4-6 / gpt-4o-mini       (backend default if unset)
-#            REPORT_LOCALE   zh | en                                    (default: zh)
+#            REPORT_LOCALE   zh | en                                    (default: en)
 #            REPORT_TZ       IANA tz, e.g. Asia/Shanghai / UTC          (default: UTC in CI)
 #            REPORT_HOUR     trigger hour(s) in REPORT_TZ, comma-list   (default: 8 — 08:00)
 #                            examples: "8" / "8,18" / "0,6,12,18"
@@ -44,7 +44,7 @@ permissions:
   contents: write  # needed to push to gh-pages branch
 
 concurrency:
-  group: daily-brief
+  group: tech-art-ai-news-digest
   cancel-in-progress: false
 
 jobs:
@@ -226,7 +226,7 @@ jobs:
           # vars above take precedence when both are set.
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}
-          REPORT_LOCALE: ${{ vars.REPORT_LOCALE || 'zh' }}
+          REPORT_LOCALE: ${{ vars.REPORT_LOCALE || 'en' }}
           REPORT_TZ: ${{ vars.REPORT_TZ }}
           WEB_MODE: 'true'
         run: npm run daily

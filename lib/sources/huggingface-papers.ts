@@ -19,7 +19,7 @@ export async function fetchHuggingfacePapers(
   limit = 30,
 ): Promise<RawArticle[]> {
   const raw = await curlFetch("https://huggingface.co/api/daily_papers", {
-    "User-Agent": "DailyBriefBot/1.0",
+    "User-Agent": "TechArtAINewsDigestBot/1.0",
     Accept: "application/json",
   });
   const papers = JSON.parse(raw) as HfPaper[];

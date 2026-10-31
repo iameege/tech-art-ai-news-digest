@@ -51,7 +51,7 @@ export async function sendReportEmail(
   opts: SendReportEmailOptions,
 ): Promise<boolean> {
   const from =
-    process.env.EMAIL_FROM || "DailyBrief <onboarding@resend.dev>";
+    process.env.EMAIL_FROM || "TechArtAINewsDigest <onboarding@resend.dev>";
 
   // Encode HTML as base64 attachment
   const attachment = Buffer.from(opts.htmlContent, "utf-8").toString("base64");

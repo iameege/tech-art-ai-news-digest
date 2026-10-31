@@ -1,9 +1,9 @@
 ---
-name: daily-brief
-description: Operational knowledge for the daily-brief digest pipeline (this project). RSS/API fetchers, pluggable LLM enrichment (default claude CLI on Max; also anthropic/openai/deepseek/minimax/zhipu API), TA-lens daily digest (Prompt B), HTML rendering, cross-platform scheduler integration (Windows Task Scheduler / macOS launchd / Linux cron). Load when the user asks about running daily / regenerating sections / debugging a failed run / adding or disabling sources / LLM quota / scheduler / why a tab shows wrong data / why a source failed / switching LLM backend. Always prefer the documented npm commands over re-implementing logic. Diagnose by reading logs/daily-*.log first, then logs/llm-calls.jsonl for LLM-side issues.
+name: tech-art-ai-news-digest
+description: Operational knowledge for the tech-art-ai-news-digest digest pipeline (this project). RSS/API fetchers, pluggable LLM enrichment (default claude CLI on Max; also anthropic/openai/deepseek/minimax/zhipu API), TA-lens daily digest (Prompt B), HTML rendering, cross-platform scheduler integration (Windows Task Scheduler / macOS launchd / Linux cron). Load when the user asks about running daily / regenerating sections / debugging a failed run / adding or disabling sources / LLM quota / scheduler / why a tab shows wrong data / why a source failed / switching LLM backend. Always prefer the documented npm commands over re-implementing logic. Diagnose by reading logs/daily-*.log first, then logs/llm-calls.jsonl for LLM-side issues.
 ---
 
-# daily-brief — Operational Skill
+# tech-art-ai-news-digest — Operational Skill
 
 This project generates a single-page HTML news digest covering **AI+game+research news through a Technical Artist lens** (categories: game-news / game-tech / unreal-engine / ai-news / github-trending / x-viral / research). It runs via the OS scheduler (Windows Task Scheduler / macOS launchd / Linux cron, default 08:00 local time) and emits `daily_reports/<YYYY-MM-DD>/<YYYY-MM-DD>.html` + sidecar files. The date label uses the system local timezone by default — set `REPORT_TZ` (e.g. `Asia/Shanghai`, `UTC`) in `.env.local` to override. An optional email step (Resend) sends the HTML as an attachment.
 
@@ -20,7 +20,7 @@ All paths in this skill are **relative to the project root** (the directory that
 
    ```bash
    # Cross-platform Node one-liner (prints the project root path):
-   node -e "const fs=require('fs'),os=require('os'),path=require('path');const cfg=path.join(os.homedir(),'.daily-brief-config');if(fs.existsSync(cfg))console.log(fs.readFileSync(cfg,'utf8').trim());else process.exit(1)"
+   node -e "const fs=require('fs'),os=require('os'),path=require('path');const cfg=path.join(os.homedir(),'.tech-art-ai-news-digest-config');if(fs.existsSync(cfg))console.log(fs.readFileSync(cfg,'utf8').trim());else process.exit(1)"
    ```
 
    Use the printed path: `cd "$(...)"` on bash / `Set-Location (...)` in PowerShell.
@@ -72,8 +72,8 @@ Order matters — top-to-bottom:
 
 ### "今天日报没出来" / "Chrome 没弹"
 1. Check scheduled task state — platform-specific:
-   - **Windows**: `Get-ScheduledTaskInfo -TaskName DailyBrief` → `LastRunTime` + `LastTaskResult` (`0`=success, `267009`=running, else failed)
-   - **macOS**: `launchctl list | grep com.daily-brief` (PID column + last exit code)
+   - **Windows**: `Get-ScheduledTaskInfo -TaskName TechArtAINewsDigest` → `LastRunTime` + `LastTaskResult` (`0`=success, `267009`=running, else failed)
+   - **macOS**: `launchctl list | grep com.tech-art-ai-news-digest` (PID column + last exit code)
    - **Linux**: cron doesn't track per-job state; look at `logs/cron.log`
 2. Tail today's log (date = **local**, not UTC):
    ```bash
@@ -164,9 +164,9 @@ AI技术新闻 (tech)
 
 | OS | Mechanism | Wake-from-sleep |
 |---|---|---|
-| Windows | Task Scheduler "DailyBrief" (`WakeToRun`, `AllowStartIfOnBatteries`, `StartWhenAvailable`) + power-plan wake timers | ✓ wakes laptop |
-| macOS | launchd plist `~/Library/LaunchAgents/com.daily-brief.plist` | ✗ doesn't wake; configure `pmset` separately if needed |
-| Linux | crontab entry tagged `# daily-brief` | ✗ cron doesn't fire while suspended — run skipped |
+| Windows | Task Scheduler "TechArtAINewsDigest" (`WakeToRun`, `AllowStartIfOnBatteries`, `StartWhenAvailable`) + power-plan wake timers | ✓ wakes laptop |
+| macOS | launchd plist `~/Library/LaunchAgents/com.tech-art-ai-news-digest.plist` | ✗ doesn't wake; configure `pmset` separately if needed |
+| Linux | crontab entry tagged `# tech-art-ai-news-digest` | ✗ cron doesn't fire while suspended — run skipped |
 
 Common:
 - Default trigger: **08:00 local time** (`--at HH:MM` to change)
@@ -174,7 +174,7 @@ Common:
 - Execution timeout: 30 min (Windows only; macOS/Linux no built-in timeout)
 - Set up: `node scripts/install.mjs [--at HH:MM] [--global]`
 - Tear down: `node scripts/uninstall.mjs`
-- Inspect: `Get-ScheduledTask DailyBrief | fl` or `taskschd.msc` GUI
+- Inspect: `Get-ScheduledTask TechArtAINewsDigest | fl` or `taskschd.msc` GUI
 
 ## What NOT to do
 

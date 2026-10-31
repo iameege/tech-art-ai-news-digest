@@ -10,8 +10,8 @@ import type { SourceDef } from "./types";
  * sources here.
  *
  * Locale filtering:
- *   - `REPORT_LOCALE=zh` (default) — keeps sources whose `locales` includes "zh"
- *   - `REPORT_LOCALE=en`           — keeps sources whose `locales` includes "en"
+ *   - `REPORT_LOCALE=en` (default) — keeps sources whose `locales` includes "en"
+ *   - `REPORT_LOCALE=zh`           — keeps sources whose `locales` includes "zh"
  *   Sources without an explicit `locales` field default to both ["zh", "en"].
  *
  * Adding a source:
@@ -31,7 +31,7 @@ import type { SourceDef } from "./types";
  */
 
 export const REPORT_LOCALE: "zh" | "en" =
-  process.env.REPORT_LOCALE === "en" ? "en" : "zh";
+  process.env.REPORT_LOCALE === "zh" ? "zh" : "en";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CONFIG_PATH = path.resolve(__dirname, "../..", "sources.config.json");
